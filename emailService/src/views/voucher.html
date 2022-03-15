@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <title>Register</title>
+</head>
+
+<body>
+
+  <style>
+    * {
+      margin: 0
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #F7FAFC;
+      background: #181A22;
+    }
+
+    img {
+      width: 150px;
+    }
+
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 600px;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #282A36;
+      margin: 0 auto;
+    }
+
+    span {
+      font-weight: bold;
+    }
+
+    .content-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .resend-mail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      border: 1px solid #282A36;
+      background: transparent;
+      color: #F2F2F2;
+      text-decoration: none;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 15rem;
+      height: 2rem;
+      margin-top: 2rem;
+      transition: background-color 4s;
+    }
+
+    .resend-mail:hover {
+      filter: brightness(0.9);
+      border: 1px solid #2D9CDB;
+      color: #2D9CDB;
+    }
+
+    .confirm-mail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      background: #2D9CDB;
+      color: #181A22;
+      text-decoration: none;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 15rem;
+      height: 2rem;
+      margin-top: 2rem;
+      transition: background-color 4s;
+    }
+
+    .confirm-mail:hover {
+      filter: brightness(0.9);
+      color: #F7FAFC;
+    }
+
+    .ticket-container {
+      display: flex;
+      margin-bottom: 1rem;
+      max-width: 500px;
+      background-image: url("../../../common/assets/logo-background.svg");
+      background-repeat: no-repeat;
+      background-size: 300px 180px;
+      background-position: center;
+    }
+
+    .ticket {
+      padding: 0.5rem;
+      display: flex;
+      height: 186px;
+      width: 535px;
+      border-radius: 10px;
+      background: linear-gradient(to right, rgba(75, 139, 175, 0.5592), rgba(65, 116, 146, 0.46));
+      align-items: center;
+    }
+
+    .user-info-content {
+      flex: 1;
+      display: flex;
+      transform: rotate(-90deg);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .user-info-content strong {
+      font-size: 14px;
+      font-weight: 5px
+      text
+    }
+
+    .user-info-content p {
+      font-size: 10px
+    }
+
+    .flight {
+      width: 100%;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .flight section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .separator {
+      content: '';
+      height: 100%;
+      border: 2px solid #000000;
+      border-style: dashed;
+
+    }
+
+    .ticket-code {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 186px;
+      width: 80px;
+      padding: 0.5rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9)
+    }
+
+    .ticket-code img {
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+  <div class="container">
+    <section class="content">
+      <header class="forecast-img">
+        <img src="../../../common/assets/dreams.svg" alt="Forecast logo">
+      </header>
+      <p><span>Olá</span> {{firstName}} 👋</p>
+
+      <p>Your's tickets are available!</p>
+
+      <div class="ticket-container">
+        <div class="ticket">
+          <section class="user-info-content">
+            <strong>CHRISTIAN CESAR</strong>
+            <p>038.***.***-43</p>
+          </section>
+          <div class="flight">
+            <section>
+              <h1>CGB</h1>
+              <p>Cuiaba</p>
+              <div>
+                <div>
+                  <h3>Terminal</h3>
+                  <p>LA 773</p>
+                </div>
+                <div>
+                  <h3>Cabine</h3>
+                  <p>Economic</p>
+                </div>
+                <div>
+                  <h3>Assento</h3>
+                  <p>17</p>
+                </div>
+                
+              </div>
+            </section>
+            <div class="separator"></div>
+            <section>
+              <h1>CGB</h1>
+              <p>Cuiaba</p>
+            </section>
+          </div>
+        </div>
+        <div class="ticket-code">
+          <img src="../../../common/assets/qrcode.svg" alt="qrcode">
+        </div>
+      </div>
+
+
+      <span>Equipe Dreams ✈️</span>
+
+    </section>
+  </div>
+
+</body>
+
+</html>
