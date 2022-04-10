@@ -29,4 +29,7 @@ export class FlightsController {
 
     return response.json(flightOffers.data)
   }
+
+  // async create(request: Request, response: Response): Promise<Response> {}
+
 }
