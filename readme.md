@@ -14,4 +14,4 @@ Para tetar a aplicabilidade será feito uso de algumas APIs como:
 
 O frontend do projeto será desenvolvido em cima deste layout https://www.figma.com/file/6I7KCuu7ogojkidwAXxvJT/Dreams?node-id=214%3A2
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F6I7KCuu7ogojkidwAXxvJT%2FDreams%3Fnode-id%3D214%253A2" allowfullscreen></iframe>
+[Dreams](./common/assets/ui.png)
