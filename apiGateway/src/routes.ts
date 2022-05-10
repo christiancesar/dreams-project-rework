@@ -16,8 +16,11 @@ routes.get('/users', usersControllers.index);
 routes.get('/users/:userId', usersControllers.show);
 routes.patch('/users', usersControllers.update);
 
+
+routes.get('/flights/:flightId', flightsController.show)
 routes.get('/flights', flightsController.index)
 routes.post('/flights', flightsController.create)
+
 
 routes.get('/hotels', hotelsController.index)
 

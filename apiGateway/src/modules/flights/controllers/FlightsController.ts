@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { json } from "node:stream/consumers";
 import { FlightOfferSearchRequest } from "../../../@types/amadeus/flights/FlightOfferSearchRequest";
 import CreateFlightService from "../services/CreateFlightService";
+import ShowFlightService from "../services/ShowFlightService";
 import FlightOfferSearchService from "../services/FlightOfferSearchService";
 
 
@@ -40,5 +40,12 @@ export class FlightsController {
     })
 
     return response.json(flightOffers?.data)
+  }
+
+  async show(request: Request, response: Response): Promise<Response> {
+    const { flightId } = request.params
+    const showFlightService = new ShowFlightService();
+    const flights = await showFlightService.execute({ flightId })
+    return response.json(flights)
   }
 }
