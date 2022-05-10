@@ -7,7 +7,7 @@ import { ICreateFlightDTO } from "../../dtos/ICreateFlightDTO"
 interface IFlightsRepository {
   create(data: ICreateFlightDTO): Promise<Flight>
   findByFlightId(flightId: string): Promise<Flight | null>
-  // findAll(): Promise<Flight[]>
+  findAll(): Promise<Flight[]>
   // updateFlight(flight: Flight): Promise<Flight>
   // deleteFlight(flightId: string): Promise<Flight>
 }
@@ -22,10 +22,13 @@ export class FlightsRepository implements IFlightsRepository {
     const flight = await prisma.flight.findFirst({ where: { id: flightId } })
     return flight
   }
-  // async findAll(): Promise<Flight[]> {
-  //   const flight = await prisma.flight.
-  //     return
-  // }
+
+  async findAll(): Promise<Flight[]> {
+    const flight = await prisma.flight.findMany()
+    return flight
+  }
+
+
   // async updateFlight(flight: Flight): Promise<Flight> {
   //   const flight = await prisma.flight.
   //     return
