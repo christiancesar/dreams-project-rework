@@ -1,13 +1,9 @@
 import { Request, Response } from 'express';
-import { ICreateUser } from "../dtos/ICreateUserDTO";
 import { CreateUserService } from "../services/CreateUserService";
 import { ListUsersService } from "../services/ListUsersService";
 import { ShowUserService } from "../services/ShowUserService";
 import { UpdateUserService } from '../services/UpdateUserService';
 
-interface IShowUser {
-  userId: string
-}
 
 export class UsersControllers {
 

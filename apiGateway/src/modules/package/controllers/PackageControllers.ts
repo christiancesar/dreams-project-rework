@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { IPackageRequest } from "../DTO/IPackageRequest";
-import CreatePackageService from "../service/CreatePackageService";
+import AssemblingPackageService from "../services/AssemblingPackageService";
 
-const createPackageService = new CreatePackageService()
+const assemblingPackageService = new AssemblingPackageService()
 
 export default class PackageControllers {
   async index(request: Request, response: Response): Promise<Response> {
@@ -14,10 +14,11 @@ export default class PackageControllers {
       infants,
       originLocationCode,
       returnDate,
-      travelClass
+      travelClass,
+      roomQuantity
     } = request.body as IPackageRequest;
 
-    const packages = await createPackageService.execute({
+    const packages = await assemblingPackageService.execute({
       adults,
       children,
       departureDate,
@@ -25,7 +26,8 @@ export default class PackageControllers {
       infants,
       originLocationCode,
       returnDate,
-      travelClass
+      travelClass,
+      roomQuantity
     })
 
     return response.json(packages)

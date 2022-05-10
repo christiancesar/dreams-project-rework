@@ -15,3 +15,4 @@ Para tetar a aplicabilidade será feito uso de algumas APIs como:
 O frontend do projeto será desenvolvido em cima deste layout https://www.figma.com/file/6I7KCuu7ogojkidwAXxvJT/Dreams?node-id=214%3A2
 
 ![Dreams](./common/assets/ui.png)
+

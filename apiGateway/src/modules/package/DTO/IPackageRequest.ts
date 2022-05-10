@@ -9,4 +9,5 @@ export interface IPackageRequest {
   children: number;
   infants: number;
   travelClass: TravelClass;
+  roomQuantity: number;
 }

@@ -1,9 +1,19 @@
 import { User } from ".prisma/client";
-import { prisma } from "../../../../providers/prisma";
-import { IUsersRepository } from "../interfaces/IUsersRepository";
+import { prisma } from "../../../../../prisma";
+import { ICreateUser } from "../../dtos/ICreateUserDTO";
+
+
+export interface IUsersRepository {
+  create(data: ICreateUser): Promise<User>
+  findByEmail(email: string): Promise<User | null>
+  findByUserId(userId: string): Promise<User | null>
+  findAll(): Promise<User[]>
+  updateUser(user: User): Promise<User>
+  deleteUser(userId: string): Promise<User>
+}
 
 export class UsersRepository implements IUsersRepository {
-  async create(data: Omit<User, "id">): Promise<User> {
+  async create(data: ICreateUser): Promise<User> {
     const user = await prisma.user.create({
       data
     })
@@ -25,12 +35,12 @@ export class UsersRepository implements IUsersRepository {
     return users
   }
 
-  async updateUser(user: User): Promise<User> {
-    const userUpdate = await prisma.user.update({ 
-      where: { 
-        id: user.id 
-      }, 
-      data: user 
+  async updateUser({ age, birthday, email, first_name, id, last_name }: User): Promise<User> {
+    const userUpdate = await prisma.user.update({
+      where: {
+        id: id
+      },
+      data: { age, birthday, email, first_name, last_name }
     })
     return userUpdate
   }

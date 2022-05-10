@@ -5,7 +5,7 @@ import { amadeus } from "../../../services/amadeus/amadeusApi";
 
 export default class FlightOfferSearchService {
 
-  public async execute({ 
+  public async execute({
     adults,
     departureDate,
     destinationLocationCode,
@@ -15,21 +15,25 @@ export default class FlightOfferSearchService {
     infants,
     returnDate
   }: Omit<FlightOfferSearchRequest, 'max' | 'currencyCode'>): Promise<FlightOfferSearchResponse> {
-    const findTravelClass = TravelClass[travelClass]
-    const flightOffersResponse = await amadeus.shopping.flightOffersSearch.get({
-      originLocationCode,
-      destinationLocationCode,
-      departureDate,
-      returnDate,
-      adults,
-      children,
-      infants,
-      travelClass: findTravelClass,
-      currencyCode: 'BRL',
-      max: 10
-    } as FlightOfferSearchRequest) as FlightOfferSearchResponse
+    // try {
+      const findTravelClass = TravelClass[travelClass]
+      const flightOffersResponse = await amadeus.shopping.flightOffersSearch.get({
+        originLocationCode,
+        destinationLocationCode,
+        departureDate,
+        returnDate,
+        adults,
+        children,
+        infants,
+        travelClass: findTravelClass,
+        currencyCode: 'BRL',
+        max: 10
+      } as FlightOfferSearchRequest) as FlightOfferSearchResponse
 
-
-    return flightOffersResponse
+      return flightOffersResponse
+    
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 }

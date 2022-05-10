@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@prisma/client": "^3.13.0",
+    "axios": "^0.26.1"
+  }
+}

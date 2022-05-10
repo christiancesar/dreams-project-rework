@@ -25,6 +25,7 @@ export default class HotelOfferSearchService {
       view: 'FULL',
       sort: 'NONE',
       currency: 'BRL',
+      // "page%5Blimit%5D": 1
     } as HotelOfferSearchRequest) as HotelOfferSearchResponse;
 
     return hotelOffersSearch
