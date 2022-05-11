@@ -15,6 +15,6 @@ export default class ShowHotelService {
   }
 
   async execute({ hotelId }: IHotel): Promise<Hotel | null> {
-    return this.hotelsRepository.findByHotelId( hotelId )
+    return this.hotelsRepository.findByHotelId(hotelId)
   }
 }
