@@ -1,21 +1,26 @@
+import { Request, Response } from "express";
+import CreateHotelService from "../services/hotels/CreateHotelService";
+import ListHotelsService from "../services/hotels/ListHotelsService";
+import ShowHotelService from "../services/hotels/ShowHotelService";
+
 export default class HotelController {
-  // async create(request: Request, response: Response): Promise<Response> {
-  //   const { itineraries, price } = request.body
-  //   const createFlightService = new CreateFlightService();
-  //   const flights = await createFlightService.execute({ itineraries, price })
-  //   return response.json(flights)
-  // }
+  async create(request: Request, response: Response): Promise<Response> {
+    const { hotel } = request.body
+    const createHotelService = new CreateHotelService();
+    const hotelCreated = await createHotelService.execute({ hotel })
+    return response.json(hotelCreated)
+  }
 
-  // async show(request: Request, response: Response): Promise<Response> {
-  //   const { flightId } = request.params
-  //   const showFlightService = new ShowFlightService();
-  //   const flights = await showFlightService.execute({ flightId })
-  //   return response.json(flights)
-  // }
+  async show(request: Request, response: Response): Promise<Response> {
+    const { hotelId } = request.params
+    const showHotelService = new ShowHotelService();
+    const hotels = await showHotelService.execute({ hotelId })
+    return response.json(hotels)
+  }
 
-  // async index(request: Request, response: Response): Promise<Response> {
-  //   const listFlightsService = new ListFlightsService();
-  //   const flights = await listFlightsService.execute();
-  //   return response.json(flights)
-  // }
+  async index(request: Request, response: Response): Promise<Response> {
+    const listHotelsService = new ListHotelsService();
+    const hotels = await listHotelsService.execute();
+    return response.json(hotels)
+  }
 }
