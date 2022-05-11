@@ -33,6 +33,7 @@ export class FlightsRepository implements IFlightsRepository {
   //   const flight = await prisma.flight.
   //     return
   // }
+  
   // async deleteFlight(flightId: string): Promise<Flight> {
   //   const flight = await prisma.flight.
   //     return

@@ -16,6 +16,4 @@ flightsRouter.get('/', flightsController.index);
 flightsRouter.post('/', flightsController.create);
 
 
-
-
 export default flightsRouter

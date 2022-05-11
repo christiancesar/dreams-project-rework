@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import IHotelOffersSearch from "../DTO/IHotelOffersSearch";
+import IHotelOffersSearch from "../dtos/IHotelOffersSearch";
 import HotelOfferSearchService from "../services/HotelOffersSearchService";
 
 const hotelOfferSearchService = new HotelOfferSearchService()

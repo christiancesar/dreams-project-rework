@@ -1,7 +1,7 @@
 import FlightOfferSearchService from "../../flights/services/FlightOfferSearchService";
 import HotelOfferSearchService from "../../hotels/services/HotelOffersSearchService";
-import Package from "../DTO/IPackage";
-import { IPackageRequest } from "../DTO/IPackageRequest";
+import Package from "../dtos/IPackage";
+import { IPackageRequest } from "../dtos/IPackageRequest";
 
 const flightOfferSearchService = new FlightOfferSearchService();
 const hotelOfferSearchService = new HotelOfferSearchService()

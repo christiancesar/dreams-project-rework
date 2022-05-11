@@ -1,20 +1,18 @@
 import { Router } from "express";
 import flightsRouter from "./modules/flights/routes/flightsRouter";
-import { HotelsController } from "./modules/hotels/controllers/HotelsController";
-import PackageControllers from "./modules/package/controllers/PackageControllers";
+import hotelsRouter from "./modules/hotels/routes/hotelsRouter";
+import packagesRouter from "./modules/package/routes/packagesRouter";
 import usersRouter from "./modules/users/routes/usersRouter";
 
 
 const routes = Router();
 
-const hotelsController = new HotelsController();
-const packageControllers = new PackageControllers();
-
 routes.use('/users', usersRouter);
 
 routes.use('/flights', flightsRouter)
 
-routes.get('/hotels', hotelsController.index)
+routes.use('/hotels', hotelsRouter)
 
-routes.get('/packages', packageControllers.index)
+routes.use('/packages', packagesRouter)
+
 export default routes;

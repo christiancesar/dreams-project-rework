@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IPackageRequest } from "../DTO/IPackageRequest";
+import { IPackageRequest } from "../dtos/IPackageRequest";
 import AssemblingPackageService from "../services/AssemblingPackageService";
 
 const assemblingPackageService = new AssemblingPackageService()
