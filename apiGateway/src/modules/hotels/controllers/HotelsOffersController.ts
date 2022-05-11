@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import IHotelOffersSearch from "../dtos/IHotelOffersSearch";
-import HotelOfferSearchService from "../services/HotelOffersSearchService";
+import HotelOfferSearchService from "../services/hotelOffers/HotelOffersSearchService";
 
-const hotelOfferSearchService = new HotelOfferSearchService()
-export class HotelsController {
+
+export class HotelsOffersController {
   async index(request: Request, response: Response): Promise<Response> {
     const {
       adults,
@@ -12,6 +12,8 @@ export class HotelsController {
       cityCode,
       roomQuantity
     } = request.body as IHotelOffersSearch;
+
+    const hotelOfferSearchService = new HotelOfferSearchService();
     
     const hotels = await hotelOfferSearchService.execute({
       adults,

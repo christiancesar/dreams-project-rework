@@ -1,6 +1,6 @@
 import { Router } from "express";
 import flightsRouter from "./modules/flights/routes/flightsRouter";
-import hotelsRouter from "./modules/hotels/routes/hotelsRouter";
+import hotelsRouter from "./modules/hotels/routes/hotelsOffersRouter";
 import packagesRouter from "./modules/package/routes/packagesRouter";
 import usersRouter from "./modules/users/routes/usersRouter";
 
