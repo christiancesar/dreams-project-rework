@@ -1,13 +1,9 @@
 import cors from 'cors';
 import express from 'express';
 import { prisma } from '../prisma';
-import { CreateUserService } from './modules/users/services/CreateUserService';
 import routes from './routes';
-import StripeFunctions from './services/stripe/StripeFunctions';
 
 const server = express();
-
-const createUserService = new CreateUserService();
 
 server.use(cors());
 

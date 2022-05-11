@@ -12,8 +12,7 @@ const packageControllers = new PackageControllers();
 
 routes.use('/users', usersRouter);
 
-routes.use('flights', flightsRouter)
-
+routes.use('/flights', flightsRouter)
 
 routes.get('/hotels', hotelsController.index)
 

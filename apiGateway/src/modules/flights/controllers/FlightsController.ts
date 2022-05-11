@@ -23,6 +23,6 @@ export class FlightsController {
   async index(request: Request, response: Response): Promise<Response> {
     const listFlightsService = new ListFlightsService();
     const flights = await listFlightsService.execute();
-    return response.json()
+    return response.json(flights)
   }
 }
