@@ -3,7 +3,7 @@ import IHotelOffersSearch from "../dtos/IHotelOffersSearch";
 import HotelOfferSearchService from "../services/hotelOffers/HotelOffersSearchService";
 
 
-export class HotelsOffersController {
+export class HotelOffersController {
   async index(request: Request, response: Response): Promise<Response> {
     const {
       adults,

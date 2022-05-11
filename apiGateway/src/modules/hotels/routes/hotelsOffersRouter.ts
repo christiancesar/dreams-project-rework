@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { HotelsOffersController } from "../controllers/HotelsOffersController";
+import { HotelOffersController } from "../controllers/HotelOffersController";
 
 const hotelsOffersRouter = Router()
-const hotelsOffersController = new HotelsOffersController();
+const hotelOffersController = new HotelOffersController();
 
-hotelsOffersRouter.get('/', hotelsOffersController.index)
+hotelsOffersRouter.get('/', hotelOffersController.index)
 
 export default hotelsOffersRouter;
