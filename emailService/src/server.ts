@@ -1,11 +1,13 @@
 import express from "express";
-import { router } from "./router";
+import { routes } from "./routes";
+import cors from 'cors';
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
-app.use(router);
+app.use(routes);
 
 app.listen(3030, () => {
-  console.log('Server listening!');
+  console.log('Server listen on port 3030! 🍹')
 })
