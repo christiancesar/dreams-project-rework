@@ -6,8 +6,6 @@ interface IHotelsRepository {
   create(data: ICreateHotelDTO): Promise<Hotel>
   findByHotelId(hotelId: string): Promise<Hotel | null>
   findAllHotels(): Promise<Hotel[]>
-
-
 }
 export default class HotelsRepository implements IHotelsRepository {
   async create(data: ICreateHotelDTO): Promise<Hotel> {

@@ -4,6 +4,6 @@ import PackageControllers from "../controllers/PackageControllers";
 const packagesRouter = Router();
 const packageControllers = new PackageControllers();
 
-packagesRouter.use('/packages', packageControllers.index)
+packagesRouter.use('/', packageControllers.index)
 
 export default packagesRouter;

@@ -1,5 +1,7 @@
+import { format, isBefore, isPast, isYesterday } from "date-fns";
+import AppError from "../../../errors/AppError";
 import FlightOfferSearchService from "../../flights/services/FlightOfferSearchService";
-import HotelOfferSearchService from "../../hotels/services/HotelOffersSearchService";
+import HotelOfferSearchService from "../../hotels/services/hotelOffers/HotelOffersSearchService";
 import Package from "../dtos/IPackage";
 import { IPackageRequest } from "../dtos/IPackageRequest";
 
@@ -17,6 +19,15 @@ export default class AssemblingPackageService {
     returnDate,
     travelClass
   }: IPackageRequest): Promise<Package[]> {
+    // isBefore(new Date(departureDate), Date.now())
+    format(Date.now(), 'yyyy/MM/dd')
+    new Date(departureDate)
+
+
+    if (isYesterday(new Date(departureDate))) {
+      throw new AppError("You can't create an appointment on a past date.");
+    }
+    
     const flights = await flightOfferSearchService.execute({
       adults,
       children,
