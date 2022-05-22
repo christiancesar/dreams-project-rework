@@ -16,7 +16,7 @@ server.use(routes);
 server.use(interceptErrorMiddleware);
 
 async function main() {
-  // await prisma.$connect()
+  await prisma.$connect()
 
   server.listen(3333, () => {
     console.log('Server listen on port 3333! 🍹')

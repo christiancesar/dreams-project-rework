@@ -25,4 +25,5 @@ model Flight {
 model Hotel {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   hotel Json
+  offers Json
 }

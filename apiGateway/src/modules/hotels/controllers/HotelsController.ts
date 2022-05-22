@@ -5,9 +5,9 @@ import ShowHotelService from "../services/hotels/ShowHotelService";
 
 export default class HotelsController {
   async create(request: Request, response: Response): Promise<Response> {
-    const { hotel } = request.body
+    const { hotel, offers } = request.body
     const createHotelService = new CreateHotelService();
-    const hotelCreated = await createHotelService.execute({ hotel })
+    const hotelCreated = await createHotelService.execute({ hotel, offers })
     return response.json(hotelCreated)
   }
 

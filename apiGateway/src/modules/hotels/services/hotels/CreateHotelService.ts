@@ -3,6 +3,7 @@ import HotelsRepository from "../../repositories/implementations/HotelsRepositor
 
 interface IHotel {
   hotel: Prisma.JsonObject;
+  offers: Prisma.JsonArray;
 }
 
 export default class CreateHotelService {
@@ -13,8 +14,8 @@ export default class CreateHotelService {
     this.hotelsRepository = new HotelsRepository()
   }
 
-  async execute({ hotel }: IHotel): Promise<Hotel> {
-    const hotelCreated = await this.hotelsRepository.create({ hotel });
+  async execute({ hotel, offers }: IHotel): Promise<Hotel> {
+    const hotelCreated = await this.hotelsRepository.create({ hotel, offers });
     return hotelCreated;
   }
 } 
