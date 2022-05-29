@@ -7,7 +7,13 @@
 
 - [X] emailService - responsável disparar emails seja independente do serviço que solicita.
 
-- [ ] userService - Serviço responsável pelo cadastro, autenticação e manutenção do usuário.
+- [x] userService - Serviço responsável pelo cadastro, autenticação e manutenção do usuário.
+    Servidor ✅
+    Banco de dados ✅
+    CRUD ✅
+    Comunicando com ApiGateway
+    Comunicando com emailService
+  
 
 - [ ] flightService - Serviço de pesquisa de voos, pesquisa em uma ou mais apis
 

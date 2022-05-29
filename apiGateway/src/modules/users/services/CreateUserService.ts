@@ -1,35 +1,61 @@
-import { User } from ".prisma/client";
-import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { ServiceError } from '@grpc/grpc-js';
+import AppError from '../../../errors/AppError';
+import { User, UserRequest, UserResponse } from '../../../protos/users/user_pb';
+import userClient from '../../../services/UserService';
+import { ICreateUser } from '../dtos/ICreateUserDTO';
+import { IUserDTO } from '../dtos/IUserDTO';
 
 export class CreateUserService {
-  private userRepository: UsersRepository;
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
-  
-  async execute({ 
-    first_name, 
-    last_name, 
-    birthday, 
-    age, 
-    email 
-  }: Omit<User, "id">): Promise<User> 
-  {
+  async execute({
+    firstName,
+    lastName,
+    birthday,
+    age,
+    email
+  }: ICreateUser): Promise<IUserDTO> {
 
-    const userAlreadyExist = await this.userRepository.findByEmail(email)
+    let userResponse = {} as IUserDTO;
 
-    if (userAlreadyExist) {
-      return userAlreadyExist
-    }
-
-    const user = this.userRepository.create({ 
-      first_name, 
-      last_name, 
-      birthday, 
-      age, 
-      email 
+    const userServiceRequest = (userRequest: ICreateUser) => new Promise<UserResponse>((resolve, reject) => {
+      userClient.createUser(
+        new UserRequest().setUser(
+          new User()
+            .setFirstname(userRequest.firstName)
+            .setLastname(userRequest.lastName)
+            .setAge(userRequest.age)
+            .setEmail(userRequest.email)
+            .setBirthday(userRequest.birthday)
+        ), (err, users) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(users)
+        }
+      )
     })
-    return user
+
+    await userServiceRequest({
+      firstName,
+      lastName,
+      birthday,
+      age,
+      email
+    })
+      .then((users: UserResponse) => {
+        userResponse = {
+          id: users.toObject().userList[0].id,
+          firstName: users.toObject().userList[0].firstname,
+          lastName: users.toObject().userList[0].lastname,
+          age: users.toObject().userList[0].age,
+          birthday: users.toObject().userList[0].birthday,
+          email: users.toObject().userList[0].email,
+        };
+      })
+      .catch((error: ServiceError) => {
+        new AppError(error.message)
+      })
+
+    return userResponse;
   }
 }
