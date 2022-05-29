@@ -1,7 +1,7 @@
 export interface IUserDTO {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   age: number;
   birthday: string;
   email: string;

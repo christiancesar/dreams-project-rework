@@ -13,9 +13,9 @@ export class CreateUserService {
     birthday,
     age,
     email
-  }: ICreateUser): Promise<IUserDTO> {
+  }: ICreateUser): Promise<IUserDTO[]> {
 
-    let userResponse = {} as IUserDTO;
+    let users = [] as IUserDTO[];
 
     const userServiceRequest = (userRequest: ICreateUser) => new Promise<UserResponse>((resolve, reject) => {
       userClient.createUser(
@@ -41,21 +41,22 @@ export class CreateUserService {
       birthday,
       age,
       email
-    })
-      .then((users: UserResponse) => {
-        userResponse = {
-          id: users.toObject().userList[0].id,
-          firstName: users.toObject().userList[0].firstname,
-          lastName: users.toObject().userList[0].lastname,
-          age: users.toObject().userList[0].age,
-          birthday: users.toObject().userList[0].birthday,
-          email: users.toObject().userList[0].email,
-        };
+    }).then((userResponse: UserResponse) => {
+      userResponse.getUserList().map((user: User) => {
+        users.push({
+          id: user.toObject().id,
+          firstname: user.toObject().firstname,
+          lastname: user.toObject().lastname,
+          age: user.toObject().age,
+          birthday: user.toObject().birthday,
+          email: user.toObject().email,
+        })
       })
+    })
       .catch((error: ServiceError) => {
         new AppError(error.message)
       })
 
-    return userResponse;
+    return users;
   }
 }
