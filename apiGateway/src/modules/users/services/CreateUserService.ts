@@ -1,9 +1,9 @@
 import { ServiceError } from '@grpc/grpc-js';
-import AppError from '../../../errors/AppError';
 import { User, UserRequest, UserResponse } from '../../../protos/users/user_pb';
-import userClient from '../../../services/UserService';
 import { ICreateUser } from '../dtos/ICreateUserDTO';
 import { IUserDTO } from '../dtos/IUserDTO';
+import AppError from '../../../errors/AppError';
+import userClient from '../../../services/UserService';
 
 export class CreateUserService {
 
@@ -54,7 +54,7 @@ export class CreateUserService {
       })
     })
       .catch((error: ServiceError) => {
-        new AppError(error.message)
+        throw new AppError(error.message)
       })
 
     return users;

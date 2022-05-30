@@ -1,4 +1,3 @@
-import { UsersRepository } from "../repositories/implementations/UsersRepository";
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { User, UserResponse } from "../../../protos/users/user_pb";
 import { IUserDTO } from '../dtos/IUserDTO';
@@ -8,7 +7,6 @@ import AppError from "../../../errors/AppError";
 import { ServiceError } from "@grpc/grpc-js";
 
 export class ListUsersService {
-  private userRepository: UsersRepository;
 
   async execute(): Promise<IUserDTO[]> {
     let users = [] as IUserDTO[];
@@ -38,7 +36,7 @@ export class ListUsersService {
       })
 
     }).catch((error: ServiceError) => {
-      new AppError(error.message)
+      throw new AppError(error.message)
     })
 
 

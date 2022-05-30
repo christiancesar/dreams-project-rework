@@ -1,24 +1,51 @@
-import { User } from ".prisma/client";
-import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { ServiceError } from "@grpc/grpc-js";
+import AppError from "../../../errors/AppError";
+import { User, UserRequest, UserResponse } from "../../../protos/users/user_pb";
+import userClient from "../../../services/UserService";
+import { IUserDTO } from "../dtos/IUserDTO";
 
 interface IRequest {
   userId: string
 }
 
 export class ShowUserService {
-  private userRepository: UsersRepository;
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
+  async execute({ userId }: IRequest): Promise<IUserDTO[]> {
 
-  async execute({ userId }: IRequest): Promise<User> {
-    const user = await this.userRepository.findByUserId(userId)
-    
-    if (!user) {
-      throw new Error("Sorry, but user not exist.");
-    }
-    
-    return user
+    let users = [] as IUserDTO[];
+
+    const userServiceRequest = () => new Promise<UserResponse>((resolve, reject) => {
+      userClient.showUser(
+        new UserRequest().setUser(
+          new User().setId(userId)
+        ), (err, users) => {
+          if (err) {
+            reject(err)
+          }
+
+          resolve(users)
+        }
+      )
+    })
+
+    await userServiceRequest().then((userResponse: UserResponse) => {
+      userResponse.getUserList().map((user: User) => {
+        users.push({
+          id: user.toObject().id,
+          firstname: user.toObject().firstname,
+          lastname: user.toObject().lastname,
+          age: user.toObject().age,
+          birthday: user.toObject().birthday,
+          email: user.toObject().email,
+        })
+      })
+
+    }).catch((error: ServiceError) => {
+      throw new AppError(error.message)
+    })
+
+
+    return users
+
   }
 }

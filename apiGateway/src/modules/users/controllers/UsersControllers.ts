@@ -42,14 +42,14 @@ export class UsersControllers {
   }
 
   async update(request: Request, response: Response): Promise<Response> {
-    const { id, first_name, last_name, birthday, age, email } = request.body;
+    const { id, firstname, lastname, birthday, age, email } = request.body;
 
     const updateUserService = new UpdateUserService();
     
     const user = await updateUserService.execute({
       id,
-      first_name,
-      last_name,
+      firstname,
+      lastname,
       birthday,
       age,
       email

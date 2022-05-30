@@ -19,6 +19,9 @@ export class CreateUserService {
     
     //example error
     // throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'Invalid email address!'});
+    if(age <= 17) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'You must be over 18 years old.'});
+
+    if((lastName === '') ||(firstName === '')) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'First and Last not is empty'});
 
     const userAlreadyExist = await this.userRepository.findByEmail(email)
 
