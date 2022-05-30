@@ -1,23 +1,24 @@
-import { UsersService } from "./protos/contracts/user_grpc_pb";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
-import UsersServer from "./protos/implementations/UserServiceProto";
+import FlightServiceProto from "./protos/implementations/FlightServiceProto";
 import { prisma } from '../prisma';
+import { FlightsService } from "./protos/contracts/flights_grpc_pb";
 
+import 'dotenv/config'
 
 const server = new Server()
-server.addService(UsersService, new UsersServer())
+server.addService(FlightsService, new FlightServiceProto())
 
 const bindPromise = promisify(server.bindAsync).bind(server)
 
-bindPromise('0.0.0.0:50052', ServerCredentials.createInsecure())
+bindPromise('0.0.0.0:50053', ServerCredentials.createInsecure())
   .then(async (port) => {
-    await prisma.$connect()
+    // await prisma.$connect()
 
     console.log(`listening on ${port}`)
     server.start()
   })
   .catch(console.error)
   .finally(async () => {
-    await prisma.$disconnect()
+    // await prisma.$disconnect()
   })

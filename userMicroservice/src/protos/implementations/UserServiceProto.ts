@@ -2,8 +2,8 @@
 import grpc, { sendUnaryData, ServerErrorResponse, ServerUnaryCall } from "@grpc/grpc-js";
 import { User } from "@prisma/client";
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb.js';
-import { IUsersServer } from "../../../proto/user_grpc_pb";
-import { User as UserProto, UserResponse, UserRequest } from "../../../proto/user_pb";
+import { IUsersServer } from "../contracts/user_grpc_pb";
+import { User as UserProto, UserResponse, UserRequest } from "../contracts/user_pb";
 import { CreateUserService } from "../../services/CreateUserService";
 import { ListUsersService } from "../../services/ListUsersService";
 import { ShowUserService } from "../../services/ShowUserService";

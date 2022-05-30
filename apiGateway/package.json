@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev:server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/server.ts",
-    "prisma:migrate": "prisma migrate dev --schema=./src/providers/prisma/schema.prisma"
+    "dev:server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/server.ts"
   },
   "devDependencies": {
     "@prisma/client": "^3.13.0",

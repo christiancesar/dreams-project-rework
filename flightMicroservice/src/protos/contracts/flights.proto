@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package flight;
+
+import "google/protobuf/empty.proto";
+
+message Flight {
+  string originLocationCode = 1;
+  string destinationLocationCode = 2;
+  string departureDate = 3;
+  string returnDate = 4;
+  int64 adults = 5;
+  int64 children = 6;
+  int64 infants = 7;
+  string travelClass = 8;
+}
+
+message FlightOffersResponse {
+  string flightOffers = 1;
+}
+
+message FlightRequest {
+  Flight flight = 1;
+}
+
+service Flights {
+  rpc searchFlightOffer(FlightRequest) returns (FlightOffersResponse);
+  // rpc createUser(UserRequest) returns (UserResponse);
+  // rpc listUsers(google.protobuf.Empty) returns (UserResponse);
+  // rpc showUser(UserRequest) returns (UserResponse);
+  // rpc updateUser(UserRequest) returns (UserResponse);
+}

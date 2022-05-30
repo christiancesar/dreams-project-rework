@@ -11,7 +11,7 @@
     Servidor ✅
     Banco de dados ✅
     CRUD ✅
-    Comunicando com ApiGateway
+    Comunicando com ApiGateway ✅
     Comunicando com emailService
   
 
