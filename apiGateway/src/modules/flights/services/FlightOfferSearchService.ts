@@ -1,7 +1,20 @@
 import { FlightOfferSearchRequest } from "../../../@types/amadeus/flights/FlightOfferSearchRequest";
-import { FlightOfferSearchResponse } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
+import { FlightOffer, FlightOfferSearchResponse } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
 import { TravelClass } from "../../../@types/amadeus/flights/TravelClass";
+import { Flight, FlightOffersResponse, FlightRequest } from "../../../protos/flight/flights_pb";
 import { amadeus } from "../../../providers/amadeus/amadeusApi";
+import flightClient from "../../../services/FlightService";
+
+interface IRequest {
+  originLocationCode: string;
+  destinationLocationCode: string;
+  departureDate: string;
+  returnDate?: string;
+  adults: number;
+  children?: number;
+  infants?: number;
+  travelClass: string;
+}
 
 export default class FlightOfferSearchService {
 
@@ -14,26 +27,40 @@ export default class FlightOfferSearchService {
     children,
     infants,
     returnDate
-  }: Omit<FlightOfferSearchRequest, 'max' | 'currencyCode'>): Promise<FlightOfferSearchResponse> {
-    // try {
-      const findTravelClass = TravelClass[travelClass]
-      const flightOffersResponse = await amadeus.shopping.flightOffersSearch.get({
-        originLocationCode,
-        destinationLocationCode,
-        departureDate,
-        returnDate,
-        adults,
-        children,
-        infants,
-        travelClass: findTravelClass,
-        currencyCode: 'BRL',
-        max: 10
-      } as FlightOfferSearchRequest) as FlightOfferSearchResponse
+  }: IRequest): Promise<FlightOffer[]> {
+    const flightServiceRequest = (search: IRequest) => new Promise<FlightOffersResponse>((resolve, reject) => {
+      flightClient.searchFlightOffer(
+        new FlightRequest().setFlight(
+          new Flight().setAdults(adults)
+                      .setDeparturedate(departureDate)
+                      .setDestinationlocationcode(destinationLocationCode)
+                      .setOriginlocationcode(originLocationCode)
+                      .setTravelclass(travelClass)
+                      .setChildren(children|| 0)
+                      .setInfants(infants|| 0)
+                      .setReturndate(returnDate || '')
+        ), (err, users) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(users)
+        }
+      )
+    });
 
-      return flightOffersResponse
-    
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    const flightOffersResponse = await flightServiceRequest({
+      adults,
+      departureDate,
+      destinationLocationCode,
+      originLocationCode,
+      travelClass,
+      children,
+      infants,
+      returnDate
+    })
+
+    const flights = JSON.parse(flightOffersResponse.getFlightoffers()) as FlightOffer[]
+
+    return flights;
   }
 }

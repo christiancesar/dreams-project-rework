@@ -2,9 +2,19 @@ import { Request, Response } from "express";
 import { FlightOfferSearchRequest } from "../../../@types/amadeus/flights/FlightOfferSearchRequest";
 import FlightOfferSearchService from "../services/FlightOfferSearchService";
 
+interface IRequest {
+  originLocationCode: string;
+  destinationLocationCode: string;
+  departureDate: string;
+  returnDate?: string;
+  adults: number;
+  children?: number;
+  infants?: number;
+  travelClass: string;
+}
+
 export default class FlightsOffersController {
   
-
   async index(request: Request, response: Response): Promise<Response> {
 
     const {
@@ -16,7 +26,7 @@ export default class FlightsOffersController {
       children,
       infants,
       returnDate
-    } = request.body as Omit<FlightOfferSearchRequest, 'max' | 'currencyCode'>
+    } = request.body as IRequest
 
     const flightOfferSearchService = new FlightOfferSearchService();
 
@@ -31,6 +41,6 @@ export default class FlightsOffersController {
       returnDate
     })
 
-    return response.json(flightOffers?.data)
+    return response.json(flightOffers)
   }
 }
