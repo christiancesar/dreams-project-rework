@@ -4,7 +4,8 @@ package flight;
 
 import "google/protobuf/empty.proto";
 
-message Flight {
+
+message FlightOffersRequest {
   string originLocationCode = 1;
   string destinationLocationCode = 2;
   string departureDate = 3;
@@ -19,14 +20,34 @@ message FlightOffersResponse {
   string flightOffers = 1;
 }
 
+message Flight {
+  string id = 1;
+  string itineraries = 2;
+  string price = 3;
+}
+
+
 message FlightRequest {
+  string itineraries = 1;
+  string price = 2;
+}
+
+message FlightResponse {
   Flight flight = 1;
 }
 
+message FlightListResponse {
+  repeated Flight flight = 1;
+}
+
+
+message FlightShowRequest {
+  string id = 1;
+}
+
 service Flights {
-  rpc searchFlightOffer(FlightRequest) returns (FlightOffersResponse);
-  // rpc createUser(UserRequest) returns (UserResponse);
-  // rpc listUsers(google.protobuf.Empty) returns (UserResponse);
-  // rpc showUser(UserRequest) returns (UserResponse);
-  // rpc updateUser(UserRequest) returns (UserResponse);
+  rpc searchFlightOffer(FlightOffersRequest) returns (FlightOffersResponse);
+  rpc createFlight(FlightRequest) returns (FlightResponse);
+  rpc listFlights(google.protobuf.Empty) returns (FlightListResponse);
+  rpc showFlight(FlightShowRequest) returns (FlightResponse);
 }

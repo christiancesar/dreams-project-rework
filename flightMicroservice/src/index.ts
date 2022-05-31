@@ -13,12 +13,12 @@ const bindPromise = promisify(server.bindAsync).bind(server)
 
 bindPromise('0.0.0.0:50053', ServerCredentials.createInsecure())
   .then(async (port) => {
-    // await prisma.$connect()
+    await prisma.$connect()
 
     console.log(`listening on ${port}`)
     server.start()
   })
   .catch(console.error)
   .finally(async () => {
-    // await prisma.$disconnect()
+    await prisma.$disconnect()
   })
