@@ -11,7 +11,7 @@ class FlightServer implements IFlightsServer {
 
   async searchFlightOffer(call: ServerUnaryCall<FlightOffersRequest, FlightOffersResponse>, callback: sendUnaryData<FlightOffersResponse>): Promise<void> {
     try {
-      const flightOffersRequest = call.request.toObject()!;
+      const flightOffersRequest = call.request.getFlightofferssearch()?.toObject()!
       const flightOffersResponse = new FlightOffersResponse();
       const flightOfferSearchService = new FlightOfferSearchService();
 

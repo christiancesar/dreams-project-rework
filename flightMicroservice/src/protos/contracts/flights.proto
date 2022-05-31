@@ -4,8 +4,7 @@ package flight;
 
 import "google/protobuf/empty.proto";
 
-
-message FlightOffersRequest {
+message FlightOffersSearch {
   string originLocationCode = 1;
   string destinationLocationCode = 2;
   string departureDate = 3;
@@ -14,6 +13,9 @@ message FlightOffersRequest {
   int64 children = 6;
   int64 infants = 7;
   string travelClass = 8;
+}
+message FlightOffersRequest {
+  FlightOffersSearch flightOffersSearch = 1;
 }
 
 message FlightOffersResponse {

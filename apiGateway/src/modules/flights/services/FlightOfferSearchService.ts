@@ -1,8 +1,5 @@
-import { FlightOfferSearchRequest } from "../../../@types/amadeus/flights/FlightOfferSearchRequest";
-import { FlightOffer, FlightOfferSearchResponse } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
-import { TravelClass } from "../../../@types/amadeus/flights/TravelClass";
-import { Flight, FlightOffersResponse, FlightOffersRequest } from "../../../protos/flight/flights_pb";
-import { amadeus } from "../../../providers/amadeus/amadeusApi";
+import { FlightOffer } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
+import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "../../../protos/flight/flights_pb";
 import flightClient from "../../../services/FlightService";
 
 interface IRequest {
@@ -30,20 +27,22 @@ export default class FlightOfferSearchService {
   }: IRequest): Promise<FlightOffer[]> {
     const flightServiceRequest = (search: IRequest) => new Promise<FlightOffersResponse>((resolve, reject) => {
       flightClient.searchFlightOffer(
-        new FlightOffersRequest().setAdults(adults)
-                                 .setDeparturedate(departureDate)
-                                 .setDestinationlocationcode(destinationLocationCode)
-                                 .setOriginlocationcode(originLocationCode)
-                                 .setTravelclass(travelClass)
-                                 .setChildren(children || 0)
-                                 .setInfants(infants || 0)
-                                 .setReturndate(returnDate || '')
-          , (err, users) => {
-            if (err) {
-              reject(err)
-            }
-            resolve(users)
+        new FlightOffersRequest().setFlightofferssearch(
+          new FlightOffersSearch()
+            .setAdults(adults)
+            .setDeparturedate(departureDate)
+            .setDestinationlocationcode(destinationLocationCode)
+            .setOriginlocationcode(originLocationCode)
+            .setTravelclass(travelClass)
+            .setChildren(children || 0)
+            .setInfants(infants || 0)
+            .setReturndate(returnDate || '')
+        ), (err, users) => {
+          if (err) {
+            reject(err)
           }
+          resolve(users)
+        }
       );
     });
 

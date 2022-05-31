@@ -7,23 +7,53 @@
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 
-export class FlightOffersRequest extends jspb.Message { 
+export class FlightOffersSearch extends jspb.Message { 
     getOriginlocationcode(): string;
-    setOriginlocationcode(value: string): FlightOffersRequest;
+    setOriginlocationcode(value: string): FlightOffersSearch;
     getDestinationlocationcode(): string;
-    setDestinationlocationcode(value: string): FlightOffersRequest;
+    setDestinationlocationcode(value: string): FlightOffersSearch;
     getDeparturedate(): string;
-    setDeparturedate(value: string): FlightOffersRequest;
+    setDeparturedate(value: string): FlightOffersSearch;
     getReturndate(): string;
-    setReturndate(value: string): FlightOffersRequest;
+    setReturndate(value: string): FlightOffersSearch;
     getAdults(): number;
-    setAdults(value: number): FlightOffersRequest;
+    setAdults(value: number): FlightOffersSearch;
     getChildren(): number;
-    setChildren(value: number): FlightOffersRequest;
+    setChildren(value: number): FlightOffersSearch;
     getInfants(): number;
-    setInfants(value: number): FlightOffersRequest;
+    setInfants(value: number): FlightOffersSearch;
     getTravelclass(): string;
-    setTravelclass(value: string): FlightOffersRequest;
+    setTravelclass(value: string): FlightOffersSearch;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): FlightOffersSearch.AsObject;
+    static toObject(includeInstance: boolean, msg: FlightOffersSearch): FlightOffersSearch.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: FlightOffersSearch, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): FlightOffersSearch;
+    static deserializeBinaryFromReader(message: FlightOffersSearch, reader: jspb.BinaryReader): FlightOffersSearch;
+}
+
+export namespace FlightOffersSearch {
+    export type AsObject = {
+        originlocationcode: string,
+        destinationlocationcode: string,
+        departuredate: string,
+        returndate: string,
+        adults: number,
+        children: number,
+        infants: number,
+        travelclass: string,
+    }
+}
+
+export class FlightOffersRequest extends jspb.Message { 
+
+    hasFlightofferssearch(): boolean;
+    clearFlightofferssearch(): void;
+    getFlightofferssearch(): FlightOffersSearch | undefined;
+    setFlightofferssearch(value?: FlightOffersSearch): FlightOffersRequest;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): FlightOffersRequest.AsObject;
@@ -37,14 +67,7 @@ export class FlightOffersRequest extends jspb.Message {
 
 export namespace FlightOffersRequest {
     export type AsObject = {
-        originlocationcode: string,
-        destinationlocationcode: string,
-        departuredate: string,
-        returndate: string,
-        adults: number,
-        children: number,
-        infants: number,
-        travelclass: string,
+        flightofferssearch?: FlightOffersSearch.AsObject,
     }
 }
 
