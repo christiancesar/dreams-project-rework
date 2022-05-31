@@ -1,21 +1,38 @@
-import { Flight, Prisma } from "@prisma/client";
-import { FlightsRepository } from "../repositories/implementations/FlightsRepository";
+import { FlightRequest, FlightResponse } from "../../../protos/flight/flights_pb";
+import flightClient from "../../../services/FlightService";
 
-interface IFlight {
-  itineraries: Prisma.JsonArray;
-  price: Prisma.JsonObject;
+interface IRequest {
+  itineraries: any;
+  price: any;
 }
 
+
 export default class CreateFlightService {
-  private flightsRepository: FlightsRepository;
 
-  constructor() {
-    this.flightsRepository = new FlightsRepository()
-  }
-  
-  async execute({ itineraries, price }: IFlight): Promise<Flight> {
-    const flight = await this.flightsRepository.create({ itineraries, price });
+  async execute({ itineraries, price }: IRequest): Promise<any> {
 
-    return flight;
+    const createFlightServiceRequest = (search: IRequest) => new Promise<FlightResponse>((resolve, reject) => {
+      flightClient.createFlight(
+        new FlightRequest()
+          .setItineraries(JSON.stringify(itineraries))
+          .setPrice(JSON.stringify(price)),
+        (err, users) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(users)
+        }
+      );
+    });
+
+    const flightResponse = await createFlightServiceRequest({ itineraries, price })
+
+    const flight = flightResponse.getFlight()?.toObject()!
+
+    return { 
+      id: flight?.id,
+      itineraries: JSON.parse(flight.itineraries),
+      price: JSON.parse(flight?.price)
+    }
   }
 }

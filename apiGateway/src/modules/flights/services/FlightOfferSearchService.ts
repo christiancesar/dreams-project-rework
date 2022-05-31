@@ -1,6 +1,6 @@
+import flightClient from "../../../services/FlightService";
 import { FlightOffer } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
 import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "../../../protos/flight/flights_pb";
-import flightClient from "../../../services/FlightService";
 
 interface IRequest {
   originLocationCode: string;

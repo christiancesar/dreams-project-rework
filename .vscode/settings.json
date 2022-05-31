@@ -1,5 +1,12 @@
 {
   "cSpell.words": [
     "dtos"
+  ],
+  "cSpell.ignoreWords": [
+    "departuredate",
+    "destinationlocationcode",
+    "originlocationcode",
+    "returndate",
+    "travelclass"
   ]
 }
