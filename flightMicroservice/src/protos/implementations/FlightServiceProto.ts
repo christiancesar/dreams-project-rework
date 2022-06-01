@@ -2,6 +2,8 @@ import { handleUnaryCall, ServerErrorResponse } from "@grpc/grpc-js";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import CreateFlightService from "../../services/CreateFlightService";
 import FlightOfferSearchService from '../../services/FlightOfferSearchService';
+import ListFlightsService from "../../services/ListFlightsService";
+import ShowFlightService from "../../services/ShowFlightService";
 import { IFlightsServer } from "../contracts/flights_grpc_pb";
 import { Flight, FlightListResponse, FlightOffersRequest, FlightOffersResponse, FlightRequest, FlightResponse, FlightShowRequest } from "../contracts/flights_pb";
 
@@ -31,9 +33,45 @@ class FlightServer implements IFlightsServer {
 
   }
 
-  listFlights: handleUnaryCall<Empty, FlightListResponse>;
-  showFlight: handleUnaryCall<FlightShowRequest, FlightResponse> = async (call, callback): Promise<void> => {
+  listFlights: handleUnaryCall<Empty, FlightListResponse> = async (call, callback): Promise<void> => {
+    try {
+      const flightListResponse = new FlightListResponse();
+      const listFlightsService = new ListFlightsService();
 
+      const flights = await listFlightsService.execute();
+
+      flights.map((flight) => {
+        flightListResponse.addFlight(
+          new Flight().setId(flight.id)
+            .setItineraries(JSON.stringify(flight.itineraries))
+            .setPrice(JSON.stringify(flight.price))
+        );
+      })
+
+      callback(null, flightListResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
+
+  }
+
+  showFlight: handleUnaryCall<FlightShowRequest, FlightResponse> = async (call, callback): Promise<void> => {
+    try {
+      const flightShowRequest = call.request;
+      const flightResponse = new FlightResponse();
+      const showFlightService = new ShowFlightService();
+      const flight = await showFlightService.execute({ flightId: flightShowRequest.getId() });
+
+      flightResponse.setFlight(
+        new Flight().setId(flight.id)
+          .setItineraries(JSON.stringify(flight.itineraries))
+          .setPrice(JSON.stringify(flight.price))
+      )
+
+      callback(null, flightResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
   }
 
   searchFlightOffer: handleUnaryCall<FlightOffersRequest, FlightOffersResponse> = async (call, callback): Promise<void> => {

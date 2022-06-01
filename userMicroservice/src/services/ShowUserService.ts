@@ -1,4 +1,6 @@
 import { User } from ".prisma/client";
+import AppError from "../../../common/errors/AppError";
+import { status } from "@grpc/grpc-js";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
 interface IRequest {
@@ -16,7 +18,7 @@ export class ShowUserService {
     const user = await this.userRepository.findByUserId(userId)
     
     if (!user) {
-      throw new Error("Sorry, but user not exist.");
+      throw new AppError({ code: status.NOT_FOUND, name: 'Show User', message: 'Sorry, but user not exist.'});
     }
     
     return user

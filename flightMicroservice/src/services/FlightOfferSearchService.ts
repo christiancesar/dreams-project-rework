@@ -26,7 +26,6 @@ export default class FlightOfferSearchService {
     infants,
     returnDate
   }: IRequest): Promise<FlightOffer[]> {
-    // try {
     const findTravelClass = TravelClass["ECONOMY"]
     const flightOffersResponse = await amadeus.shopping.flightOffersSearch.get({
       originLocationCode,
@@ -43,8 +42,5 @@ export default class FlightOfferSearchService {
     
     return flightOffersResponse.data
 
-    // } catch (error) {
-    //   console.log(error)
-    // }
   }
 }
