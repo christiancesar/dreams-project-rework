@@ -1,6 +1,12 @@
 {
   "cSpell.words": [
-    "dtos"
+    "checkindate",
+    "checkoutdate",
+    "citycode",
+    "dtos",
+    "Hoteloffers",
+    "Hotelofferssearch",
+    "roomquantity"
   ],
   "cSpell.ignoreWords": [
     "departuredate",
