@@ -1,15 +1,37 @@
 import { Flight } from "@prisma/client";
-import { FlightsRepository } from "../repositories/implementations/FlightsRepository";
+import { Empty } from "google-protobuf/google/protobuf/empty_pb";
+import { FlightListResponse } from "../../../protos/flight/flights_pb";
+import flightClient from "../../../services/FlightService";
 
 export default class ListFlightsService {
-  private flightsRepository: FlightsRepository;
-
-  constructor() {
-    this.flightsRepository = new FlightsRepository()
-  }
 
   async execute(): Promise<Flight[]> {
-    const flights = await this.flightsRepository.findAll();
+    
+    const listFlightServiceRequest = () => new Promise<FlightListResponse>((resolve, reject) => {
+      flightClient.listFlights(
+        new Empty(),
+        (err, users) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(users)
+        }
+      );
+    });
+    
+    const flightsResponse = await listFlightServiceRequest();
+
+    const flights = [] as Flight[];
+    
+    flightsResponse.getFlightList().map(flight => {
+      flights.push({
+        id: flight.getId(),
+        itineraries: JSON.parse(flight.getItineraries()),
+        price: JSON.parse(flight.getPrice())
+      });
+    })
+
+    
     return flights
   }
 }
