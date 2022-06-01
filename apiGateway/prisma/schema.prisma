@@ -7,23 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  email      String @unique
-  first_name String
-  last_name  String
-  age        Int
-  birthday   String
-}
-
-model Flight {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  itineraries Json
-  price       Json
-}
-
 model Hotel {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  hotel Json
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  hotel  Json
   offers Json
 }
