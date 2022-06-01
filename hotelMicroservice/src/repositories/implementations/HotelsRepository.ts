@@ -1,5 +1,5 @@
 import { Hotel } from "@prisma/client"
-import { prisma } from "../../../../../prisma"
+import { prisma } from "../../../prisma"
 import ICreateHotelDTO from "../../dtos/ICreateHotelDTO"
 
 interface IHotelsRepository {
