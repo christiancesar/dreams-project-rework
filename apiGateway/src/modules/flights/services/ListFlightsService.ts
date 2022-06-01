@@ -10,11 +10,11 @@ export default class ListFlightsService {
     const listFlightServiceRequest = () => new Promise<FlightListResponse>((resolve, reject) => {
       flightClient.listFlights(
         new Empty(),
-        (err, users) => {
+        (err, flight) => {
           if (err) {
             reject(err)
           }
-          resolve(users)
+          resolve(flight)
         }
       );
     });
@@ -31,7 +31,7 @@ export default class ListFlightsService {
       });
     })
 
-    
+
     return flights
   }
 }

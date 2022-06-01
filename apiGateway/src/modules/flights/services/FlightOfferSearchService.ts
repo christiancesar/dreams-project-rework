@@ -37,11 +37,11 @@ export default class FlightOfferSearchService {
             .setChildren(children || 0)
             .setInfants(infants || 0)
             .setReturndate(returnDate || '')
-        ), (err, users) => {
+        ), (err, flight) => {
           if (err) {
             reject(err)
           }
-          resolve(users)
+          resolve(flight)
         }
       );
     });

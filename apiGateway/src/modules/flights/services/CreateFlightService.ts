@@ -16,11 +16,11 @@ export default class CreateFlightService {
         new FlightRequest()
           .setItineraries(JSON.stringify(itineraries))
           .setPrice(JSON.stringify(price)),
-        (err, users) => {
+        (err, flight) => {
           if (err) {
             reject(err)
           }
-          resolve(users)
+          resolve(flight)
         }
       );
     });
