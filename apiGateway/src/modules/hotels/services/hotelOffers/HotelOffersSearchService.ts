@@ -1,6 +1,6 @@
-import { HotelOfferSearchRequest } from "../../../../@types/amadeus/hotels/HotelOfferSearchRequest";
-import { HotelOfferSearchResponse } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import { amadeus } from "../../../../providers/amadeus/amadeusApi";
+import { HotelOffer, HotelOfferSearchResponse } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
+import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "../../../../protos/hotel/hotel_pb";
+import hotelClient from "../../../../services/HotelService";
 import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
 
 export default class HotelOfferSearchService {
@@ -10,24 +10,37 @@ export default class HotelOfferSearchService {
     checkOutDate,
     cityCode,
     roomQuantity
-  }: IHotelOffersSearch): Promise<HotelOfferSearchResponse> {
-    const hotelOffersSearch = await amadeus.shopping.hotelOffers.get({
+  }: IHotelOffersSearch): Promise<HotelOffer[]> {
+
+    const hotelServiceRequest = (search: IHotelOffersSearch) => new Promise<HotelOffersResponse>((resolve, reject) => {
+      hotelClient.searchHotelOffer(
+        new HotelOffersRequest().setHotelofferssearch(
+          new HotelOffersSearch()
+            .setAdults(adults)
+            .setCheckindate(checkInDate)
+            .setCheckoutdate(checkOutDate)
+            .setCitycode(cityCode)
+            .setRoomquantity(roomQuantity)
+        ), (err, hotel) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(hotel)
+        }
+      );
+    });
+
+    const hotelOffersResponse = await hotelServiceRequest({
       cityCode,
       checkInDate,
       checkOutDate,
       roomQuantity,
       adults,
-      radius: 50,
-      radiusUnit: 'KM',
-      paymentPolicy: 'NONE',
-      includeClosed: false,
-      bestRateOnly: true,
-      view: 'FULL',
-      sort: 'NONE',
-      currency: 'BRL',
-      // "page%5Blimit%5D": 1
-    } as HotelOfferSearchRequest) as HotelOfferSearchResponse;
+    })
 
-    return hotelOffersSearch
+    const hotels = JSON.parse(hotelOffersResponse.getHoteloffers()) as HotelOffer[];
+
+    return hotels;
+
   }
 }
