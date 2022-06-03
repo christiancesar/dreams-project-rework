@@ -1,9 +1,9 @@
 import { ServiceError } from '@grpc/grpc-js';
-import { User, UserRequest, UserResponse } from '../../../protos/user/user_pb';
+import { User, UserRequest, UserResponse } from '../protos/user/user_pb';
 import { ICreateUser } from '../dtos/ICreateUserDTO';
 import { IUserDTO } from '../dtos/IUserDTO';
 import AppError from '../../../errors/AppError';
-import userClient from '../../../services/UserService';
+import userClient from '../providers/UserService';
 
 export class CreateUserService {
 

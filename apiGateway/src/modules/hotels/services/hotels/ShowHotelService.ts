@@ -1,6 +1,6 @@
 import { Hotel } from "@prisma/client";
-import { HotelResponse, HotelShowRequest } from "../../../../protos/hotel/hotel_pb";
-import hotelClient from "../../../../services/HotelService";
+import { HotelResponse, HotelShowRequest } from "../../protos/hotel/hotel_pb";
+import hotelClient from "../../providers/HotelService";
 
 interface IRequest {
   hotelId: string

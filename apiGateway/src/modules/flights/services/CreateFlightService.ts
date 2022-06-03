@@ -1,5 +1,5 @@
-import { FlightRequest, FlightResponse } from "../../../protos/flight/flights_pb";
-import flightClient from "../../../services/FlightService";
+import { FlightRequest, FlightResponse } from "../protos/flight/flights_pb";
+import flightClient from "../providers/FlightService";
 
 interface IRequest {
   itineraries: any;

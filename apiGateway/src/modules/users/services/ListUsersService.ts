@@ -1,8 +1,8 @@
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { User, UserResponse } from "../../../protos/user/user_pb";
+import { User, UserResponse } from "../protos/user/user_pb";
 import { IUserDTO } from '../dtos/IUserDTO';
 
-import userClient from "../../../services/UserService";
+import userClient from "../providers/UserService";
 import AppError from "../../../errors/AppError";
 import { ServiceError } from "@grpc/grpc-js";
 

@@ -1,6 +1,6 @@
 import { Flight, Prisma } from "@prisma/client";
-import { FlightResponse, FlightShowRequest } from "../../../protos/flight/flights_pb";
-import flightClient from "../../../services/FlightService";
+import { FlightResponse, FlightShowRequest } from "../protos/flight/flights_pb";
+import flightClient from "../providers/FlightService";
 
 interface IFlight {
   flightId: string

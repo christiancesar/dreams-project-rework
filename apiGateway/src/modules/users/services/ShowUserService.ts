@@ -1,7 +1,7 @@
 import { ServiceError } from "@grpc/grpc-js";
 import AppError from "../../../errors/AppError";
-import { User, UserRequest, UserResponse } from "../../../protos/user/user_pb";
-import userClient from "../../../services/UserService";
+import { User, UserRequest, UserResponse } from "../protos/user/user_pb";
+import userClient from "../providers/UserService";
 import { IUserDTO } from "../dtos/IUserDTO";
 
 interface IRequest {

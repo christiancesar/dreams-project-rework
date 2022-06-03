@@ -1,6 +1,6 @@
 import { HotelOffer, HotelOfferSearchResponse } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "../../../../protos/hotel/hotel_pb";
-import hotelClient from "../../../../services/HotelService";
+import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "../../protos/hotel/hotel_pb";
+import hotelClient from "../../providers/HotelService";
 import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
 
 export default class HotelOfferSearchService {
