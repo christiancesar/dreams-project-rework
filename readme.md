@@ -1,4 +1,7 @@
 # Dreams
+
+[![wakatime](https://wakatime.com/badge/user/f290beb0-2ec4-46a7-a6a9-8e537d887a01/project/2737a823-16c9-4479-806d-a6bb4638cc6f.svg)](https://wakatime.com/badge/user/f290beb0-2ec4-46a7-a6a9-8e537d887a01/project/2737a823-16c9-4479-806d-a6bb4638cc6f)
+
 Dreams é um projeto academico, desenvolvido no intuido de testar a arquitetura de microsserviços. Este projeto é faz parte do meu Trabalho de Conclusão em Bacharelado em Sistemas de Informação pela Universidade Federal de Mato Grosso(Campos de Rondonópolis) atual Universidade Federal de Rondonópolis.
 Este projeto está sendo baseado em:  
 * "Microservices Patterns" de Chris Richardson; 
