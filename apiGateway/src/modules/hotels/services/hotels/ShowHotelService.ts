@@ -1,20 +1,34 @@
 import { Hotel } from "@prisma/client";
-import HotelsRepository from "../../repositories/implementations/HotelsRepository";
+import { HotelResponse, HotelShowRequest } from "../../../../protos/hotel/hotel_pb";
+import hotelClient from "../../../../services/HotelService";
 
-interface IHotel {
+interface IRequest {
   hotelId: string
 }
 
 
 export default class ShowHotelService {
 
-  private hotelsRepository: HotelsRepository;
+  async execute({ hotelId }: IRequest): Promise<Hotel> {
 
-  constructor() {
-    this.hotelsRepository = new HotelsRepository()
-  }
+    const showHotelServiceRequest = (hotel: IRequest) => new Promise<HotelResponse>((resolve, reject) => {
+      hotelClient.showHotel(
+        new HotelShowRequest().setId(hotelId),
+        (err, hotel) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(hotel)
+        }
+      );
+    });
 
-  async execute({ hotelId }: IHotel): Promise<Hotel | null> {
-    return this.hotelsRepository.findByHotelId(hotelId)
+    const hotelResponse = await showHotelServiceRequest({ hotelId });
+
+    return {
+      id: hotelResponse.getHotel()!.getId(),
+      hotel: JSON.parse(hotelResponse.getHotel()!.getHotel()),
+      offers: JSON.parse(hotelResponse.getHotel()!.getOffers())
+    };
   }
 }
