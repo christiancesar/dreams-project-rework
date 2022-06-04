@@ -1,4 +1,4 @@
-import { UsersService } from "./protos/contracts/user_grpc_pb";
+import { UsersService } from "dreams-proto-sharing/src/contracts/user/user_grpc_pb";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import UsersServer from "./protos/implementations/UserServiceProto";

@@ -23,6 +23,6 @@ export class HotelOffersController {
       roomQuantity
     });
 
-    return response.json(hotels.data)
+    return response.json(hotels)
   }
 }

@@ -1,5 +1,5 @@
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { User, UserResponse } from "../protos/user/user_pb";
+import { User, UserResponse } from "dreams-proto-sharing/src/contracts/user/user_pb";
 import { IUserDTO } from '../dtos/IUserDTO';
 
 import userClient from "../providers/UserService";

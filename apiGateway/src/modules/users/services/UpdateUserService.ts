@@ -1,6 +1,6 @@
 import { ServiceError } from "@grpc/grpc-js";
 import AppError from "../../../errors/AppError";
-import { User, UserRequest, UserResponse } from "../protos/user/user_pb";
+import { User, UserRequest, UserResponse } from "dreams-proto-sharing/src/contracts/user/user_pb";
 import userClient from "../providers/UserService";
 import { ICreateUser } from "../dtos/ICreateUserDTO";
 import { IUserDTO } from "../dtos/IUserDTO";
