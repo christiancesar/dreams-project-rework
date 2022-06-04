@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package packagetrip;
+
+import "google/protobuf/empty.proto";
+
+message PackageSearch {
+  string originLocationCode = 1;
+  string destinationLocationCode = 2;
+  string departureDate = 3;
+  string returnDate = 4;
+  int64 adults = 5;
+  int64 children = 6;
+  int64 infants = 7;
+  string travelClass = 8;
+  int64 roomQuantity = 9;
+}
+
+message PackageSearchResponse {
+  string package = 1;
+ 
+}
+
+message PackageSearchRequest {
+  PackageSearch packageSearch = 1;
+}
+
+service Packages {
+  rpc searchPackage(PackageSearchRequest) returns (PackageSearchResponse);
+  // rpc createPackage(PackageRequest) returns (PackageResponse);
+  // rpc listPackages(google.protobuf.Empty) returns (PackageResponse);
+  // rpc showPackage(PackageRequest) returns (PackageResponse);
+  // rpc updatePackage(PackageRequest) returns (PackageResponse);
+}

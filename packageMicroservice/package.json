@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "compile": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./proto --grpc_out=grpc_js:./proto -I ./proto ./proto/*.proto && grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=grpc_js:./proto -I ./proto ./proto/*.proto",
+    "compile": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./src/protos/contracts --grpc_out=grpc_js:./src/protos/contracts -I ./src/protos/contracts ./src/protos/contracts/*.proto && grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=grpc_js:./src/protos/contracts -I ./src/protos/contracts ./src/protos/contracts/*.proto",
     "dev:server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/index.ts"
   },
   "devDependencies": {
