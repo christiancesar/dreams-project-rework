@@ -27,6 +27,7 @@
     "@prisma/client": "3.14.0",
     "@types/uuid": "^8.3.4",
     "amadeus": "^6.0.0",
+    "dreams-proto-sharing": "^1.0.0",
     "prisma": "^3.14.0"
   }
 }

@@ -2,7 +2,7 @@ import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import HotelServiceProto from "./protos/implementations/HotelServiceProto";
 import { prisma } from '../prisma';
-import { HotelsService } from "./protos/contracts/hotel_grpc_pb";
+import { HotelsService } from "dreams-proto-sharing/src/contracts/hotel/hotel_grpc_pb";
 
 import 'dotenv/config'
 
