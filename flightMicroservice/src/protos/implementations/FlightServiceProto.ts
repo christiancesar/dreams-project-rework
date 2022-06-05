@@ -4,8 +4,8 @@ import CreateFlightService from "../../services/CreateFlightService";
 import FlightOfferSearchService from '../../services/FlightOfferSearchService';
 import ListFlightsService from "../../services/ListFlightsService";
 import ShowFlightService from "../../services/ShowFlightService";
-import { IFlightsServer } from "../contracts/flights_grpc_pb";
-import { Flight, FlightListResponse, FlightOffersRequest, FlightOffersResponse, FlightRequest, FlightResponse, FlightShowRequest } from "../contracts/flights_pb";
+import { IFlightsServer } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
+import { Flight, FlightListResponse, FlightOffersRequest, FlightOffersResponse, FlightRequest, FlightResponse, FlightShowRequest } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 
 class FlightServer implements IFlightsServer {
   createFlight: handleUnaryCall<FlightRequest, FlightResponse> = async (call, callback): Promise<void> => {

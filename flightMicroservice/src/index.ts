@@ -2,7 +2,7 @@ import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import FlightServiceProto from "./protos/implementations/FlightServiceProto";
 import { prisma } from '../prisma';
-import { FlightsService } from "./protos/contracts/flights_grpc_pb";
+import { FlightsService } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
 
 import 'dotenv/config'
 
