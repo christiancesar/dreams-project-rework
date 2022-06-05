@@ -1,4 +1,3 @@
-import { TravelClass } from "../../../@types/amadeus/flights/TravelClass";
 
 export interface IPackageRequest {
   originLocationCode: string;
@@ -8,6 +7,6 @@ export interface IPackageRequest {
   adults: number;
   children: number;
   infants: number;
-  travelClass: TravelClass;
+  travelClass: string;
   roomQuantity: number;
 }
