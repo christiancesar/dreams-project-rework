@@ -1,5 +1,5 @@
 import { HotelOffer, HotelOfferSearchResponse } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "../../protos/hotel/hotel_pb";
+import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
 import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
 

@@ -1,5 +1,5 @@
 import { Hotel } from "@prisma/client";
-import { HotelRequest, HotelResponse } from "../../protos/hotel/hotel_pb";
+import { HotelRequest, HotelResponse } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
 
 interface IRequest {

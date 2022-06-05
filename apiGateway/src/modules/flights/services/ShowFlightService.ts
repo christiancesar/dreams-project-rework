@@ -1,5 +1,5 @@
 import { Flight, Prisma } from "@prisma/client";
-import { FlightResponse, FlightShowRequest } from "../protos/flight/flights_pb";
+import { FlightResponse, FlightShowRequest } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 import flightClient from "../providers/FlightService";
 
 interface IFlight {

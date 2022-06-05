@@ -1,4 +1,4 @@
-import { FlightRequest, FlightResponse } from "../protos/flight/flights_pb";
+import { FlightRequest, FlightResponse } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 import flightClient from "../providers/FlightService";
 
 interface IRequest {

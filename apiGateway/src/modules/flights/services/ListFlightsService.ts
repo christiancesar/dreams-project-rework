@@ -1,6 +1,6 @@
 import { Flight } from "@prisma/client";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
-import { FlightListResponse } from "../protos/flight/flights_pb";
+import { FlightListResponse } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 import flightClient from "../providers/FlightService";
 
 export default class ListFlightsService {

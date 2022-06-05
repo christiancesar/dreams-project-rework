@@ -1,6 +1,6 @@
 import { Hotel } from "@prisma/client";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
-import { HotelListResponse } from "../../protos/hotel/hotel_pb";
+import { HotelListResponse } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
 
 export default class ListHotelsService {
