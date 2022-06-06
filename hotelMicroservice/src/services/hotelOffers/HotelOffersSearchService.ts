@@ -1,5 +1,5 @@
 import { HotelOfferSearchRequest } from "../../@types/amadeus/hotels/HotelOfferSearchRequest";
-import { HotelOfferSearchResponse } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
+import { HotelOffer, HotelOfferSearchResponse } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
 import { amadeus } from "../../providers/amadeus/amadeusApi";
 import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
 
@@ -10,7 +10,7 @@ export default class HotelOfferSearchService {
     checkOutDate,
     cityCode,
     roomQuantity
-  }: IHotelOffersSearch): Promise<HotelOfferSearchResponse> {
+  }: IHotelOffersSearch): Promise<HotelOffer[]> {
     const hotelOffersSearch = await amadeus.shopping.hotelOffers.get({
       cityCode,
       checkInDate,
@@ -28,6 +28,6 @@ export default class HotelOfferSearchService {
       // "page%5Blimit%5D": 1
     } as HotelOfferSearchRequest) as HotelOfferSearchResponse;
 
-    return hotelOffersSearch
+    return hotelOffersSearch.data
   }
 }

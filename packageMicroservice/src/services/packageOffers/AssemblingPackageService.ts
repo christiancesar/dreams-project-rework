@@ -27,6 +27,7 @@ interface IHotelOffersSearch {
 }
 
 export default class AssemblingPackageService {
+ 
   async execute({
     adults,
     children,
@@ -35,7 +36,8 @@ export default class AssemblingPackageService {
     infants,
     originLocationCode,
     returnDate,
-    travelClass
+    travelClass,
+    roomQuantity
   }: IPackageRequest): Promise<Package[]> {
     // if (!isMatch(departureDate, 'yyyy-MM-dd')) {
     //   throw new AppError("Formart departure date not match, example format yyyy-MM-dd.");
@@ -112,7 +114,7 @@ export default class AssemblingPackageService {
       cityCode: destinationLocationCode,
       checkInDate: departureDate,
       checkOutDate: returnDate,
-      roomQuantity: adults,
+      roomQuantity,
       adults,
     })
     

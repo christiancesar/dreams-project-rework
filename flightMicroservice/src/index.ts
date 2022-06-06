@@ -4,8 +4,6 @@ import FlightServiceProto from "./protos/implementations/FlightServiceProto";
 import { prisma } from '../prisma';
 import { FlightsService } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
 
-import 'dotenv/config'
-
 const server = new Server()
 server.addService(FlightsService, new FlightServiceProto())
 

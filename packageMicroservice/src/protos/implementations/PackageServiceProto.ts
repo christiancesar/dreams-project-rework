@@ -14,7 +14,7 @@ class PackagesServer implements IPackagesServer {
       const packageSearchResponse = new PackageSearchResponse();
       const assemblingPackageService = new AssemblingPackageService();
 
-      const packages = assemblingPackageService.execute({
+      const packages = await assemblingPackageService.execute({
         adults: packageSearchRequest.adults,
         children: packageSearchRequest.children,
         departureDate: packageSearchRequest.departuredate,
