@@ -1,7 +1,16 @@
 import { User } from ".prisma/client";
 import AppError from "../../../common/errors/AppError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
-import { status } from '@grpc/grpc-js/'
+import { status } from '@grpc/grpc-js/';
+
+interface IRequest {
+  firstName: string,
+  lastName: string,
+  birthday: string,
+  age: number,
+  email: string
+}
+
 export class CreateUserService {
   private userRepository: UsersRepository;
 
@@ -15,13 +24,13 @@ export class CreateUserService {
     birthday,
     age,
     email
-  }: Omit<User, "id">): Promise<User> {
-    
+  }: IRequest): Promise<User> {
+
     //example error
     // throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'Invalid email address!'});
-    if(age <= 17) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'You must be over 18 years old.'});
+    if (age <= 17) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'You must be over 18 years old.' });
 
-    if((lastName === '') ||(firstName === '')) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'First and Last not is empty'});
+    if ((lastName === '') || (firstName === '')) throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'First and Last not is empty' });
 
     const userAlreadyExist = await this.userRepository.findByEmail(email)
 
@@ -29,12 +38,12 @@ export class CreateUserService {
       return userAlreadyExist
     }
 
-    const user = this.userRepository.create({ 
-      firstName, 
-      lastName, 
-      birthday, 
-      age, 
-      email 
+    const user = await this.userRepository.create({
+      firstName,
+      lastName,
+      birthday,
+      age,
+      email
     })
     return user
   }

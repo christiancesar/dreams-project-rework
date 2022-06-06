@@ -21,7 +21,7 @@ class UsersServer implements IUsersServer {
         birthday: user.birthday,
         email: user.email,
         firstName: user.firstname,
-        lastName: user.lastname
+        lastName: user.lastname,
       });
 
       response.addUser(
