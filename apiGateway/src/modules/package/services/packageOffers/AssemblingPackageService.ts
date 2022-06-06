@@ -1,12 +1,8 @@
-import { format, isBefore, isMatch, isPast, isYesterday } from "date-fns";
-import AppError from "../../../../errors/AppError";
-import FlightOfferSearchService from "../../../flights/services/FlightOfferSearchService";
-import HotelOfferSearchService from "../../../hotels/services/hotelOffers/HotelOffersSearchService";
 import Package from "../../dtos/IPackage";
 import { IPackageRequest } from "../../dtos/IPackageRequest";
+import { PackageSearch, PackageSearchRequest, PackageSearchResponse } from "../../protos/contracts/package_pb";
+import packageClient from "../../providers/PackageService";
 
-const flightOfferSearchService = new FlightOfferSearchService();
-const hotelOfferSearchService = new HotelOfferSearchService()
 
 export default class AssemblingPackageService {
   async execute({
@@ -17,22 +13,33 @@ export default class AssemblingPackageService {
     infants,
     originLocationCode,
     returnDate,
-    travelClass
+    travelClass,
+    roomQuantity
   }: IPackageRequest): Promise<Package[]> {
-    // isBefore(new Date(departureDate), Date.now())
-    if (!isMatch(departureDate, 'yyyy-MM-dd')) {
-      throw new AppError("Formart departure date not match, example format yyyy-MM-dd.");
-    }
+    
+    const packageServiceRequest = (search: IPackageRequest) => new Promise<PackageSearchResponse>((resolve, reject) => {
+      packageClient.searchPackage(
+        new PackageSearchRequest().setPackagesearch(
+          new PackageSearch()
+          .setAdults(search.adults)
+          .setChildren(search.children)
+          .setDeparturedate(search.departureDate)
+          .setDestinationlocationcode(search.destinationLocationCode)
+          .setInfants(search.infants)
+          .setOriginlocationcode(search.originLocationCode)
+          .setReturndate(search.returnDate)
+          .setTravelclass(search.travelClass)
+          .setRoomquantity(search.roomQuantity)
+        ), (err, packages) => {
+          if (err) {
+            reject(err)
+          }
+          resolve(packages)
+        }
+      );
+    });
 
-    const parts = departureDate.split('-')
-
-    const newDateFepartureDate = new Date(Number(parts[0]), Number(parts[1]), Number(parts[2]))
-
-    if (isYesterday(newDateFepartureDate)) {
-      throw new AppError("You can't search in the past.");
-    }
-
-    const flights = await flightOfferSearchService.execute({
+    const packagesResponse = await packageServiceRequest({
       adults,
       children,
       departureDate,
@@ -40,41 +47,12 @@ export default class AssemblingPackageService {
       infants,
       originLocationCode,
       returnDate,
-      travelClass
+      travelClass,
+      roomQuantity
     });
 
-    const hotels = await hotelOfferSearchService.execute({
-      adults,
-      checkInDate: departureDate,
-      checkOutDate: returnDate,
-      cityCode: destinationLocationCode,
-      roomQuantity: 1
-    });
+    const packages = JSON.parse(packagesResponse.getPackage()) as Package[];
 
-    let packages = [];
-
-    if (hotels.data.length < flights.data.length) {
-      for (let index = 0; index < hotels.data.length; index++) {
-        packages.push({
-          flight: flights.data[index],
-          hotel: hotels.data[index],
-          total: Number(hotels.data[index].offers[0].price.total) + Number(flights.data[index].price.total),
-          off: Math.floor(Math.random() * (50 - 0)) + 0,
-        } as Package)
-
-      }
-    } else {
-      for (let index = 0; index < flights.data.length; index++) {
-        packages.push({
-          flight: flights.data[index],
-          hotel: hotels.data[index],
-          total: Number(hotels.data[index].offers[0].price.total) + Number(flights.data[index].price.total),
-          off: Math.floor(Math.random() * (50 - 0)) + 0,
-        })
-
-      }
-    }
-
-    return packages as Package[]
+    return packages 
   }
 }
