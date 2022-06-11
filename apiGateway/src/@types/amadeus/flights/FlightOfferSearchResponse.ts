@@ -18,7 +18,7 @@ export interface FlightOffer {
   lastTicketingDate:        string;
   numberOfBookableSeats:    number;
   itineraries:              Itinerary[];
-  price:                    DatumPrice;
+  price:                    Price;
   pricingOptions:           PricingOptions;
   validatingAirlineCodes:   string[];
   travelerPricings:         TravelerPricing[];
@@ -55,7 +55,7 @@ export interface Operating {
   carrierCode: string;
 }
 
-export interface DatumPrice {
+export interface Price {
   currency:   Currency;
   total:      string;
   base:       string;

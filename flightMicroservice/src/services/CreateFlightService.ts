@@ -1,4 +1,5 @@
 import { Flight, Prisma } from "@prisma/client";
+import { Price } from "../@types/amadeus/flights/FlightOfferSearchResponse";
 import { FlightsRepository } from "../repositories/implementations/FlightsRepository";
 
 interface IRequest {
@@ -20,16 +21,18 @@ export default class CreateFlightService {
   }
 
   async execute({ itineraries, price }: IRequest): Promise<IResponse> {
+    const flightPrice = JSON.parse(price) as Price;
 
     const flight = await this.flightsRepository.create({
       itineraries: JSON.parse(itineraries) as Prisma.JsonArray,
-      price: JSON.parse(price) as Prisma.JsonObject
+      price: JSON.parse(price) as Prisma.JsonObject,
     });
-
+    
     return {
       id: flight.id,
       itineraries: JSON.stringify(flight.itineraries),
-      price: JSON.stringify(flight.price)
+      price: JSON.stringify(flight.price),
+
     }
   }
 }

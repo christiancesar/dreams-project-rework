@@ -1,11 +1,19 @@
 import { handleUnaryCall, ServerErrorResponse } from "@grpc/grpc-js";
+import { IFlightsServer } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
+import {
+  Flight,
+  FlightListResponse,
+  FlightOffersRequest,
+  FlightOffersResponse,
+  FlightRequest,
+  FlightResponse,
+  FlightShowRequest
+} from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import CreateFlightService from "../../services/CreateFlightService";
-import FlightOfferSearchService from '../../services/FlightOfferSearchService';
+import FlightOfferSearchService from '../../services/flightOffers/FlightOfferSearchService';
 import ListFlightsService from "../../services/ListFlightsService";
 import ShowFlightService from "../../services/ShowFlightService";
-import { IFlightsServer } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
-import { Flight, FlightListResponse, FlightOffersRequest, FlightOffersResponse, FlightRequest, FlightResponse, FlightShowRequest } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
 
 class FlightServer implements IFlightsServer {
   createFlight: handleUnaryCall<FlightRequest, FlightResponse> = async (call, callback): Promise<void> => {

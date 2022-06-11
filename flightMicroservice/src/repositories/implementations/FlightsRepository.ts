@@ -8,8 +8,6 @@ interface IFlightsRepository {
   create(data: ICreateFlightDTO): Promise<Flight>
   findByFlightId(flightId: string): Promise<Flight | null>
   findAll(): Promise<Flight[]>
-  // updateFlight(flight: Flight): Promise<Flight>
-  // deleteFlight(flightId: string): Promise<Flight>
 }
 
 export class FlightsRepository implements IFlightsRepository {
@@ -28,14 +26,4 @@ export class FlightsRepository implements IFlightsRepository {
     return flight
   }
 
-
-  // async updateFlight(flight: Flight): Promise<Flight> {
-  //   const flight = await prisma.flight.
-  //     return
-  // }
-  
-  // async deleteFlight(flightId: string): Promise<Flight> {
-  //   const flight = await prisma.flight.
-  //     return
-  // }
 }
