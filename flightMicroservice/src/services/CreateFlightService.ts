@@ -5,6 +5,7 @@ import { FlightsRepository } from "../repositories/implementations/FlightsReposi
 interface IRequest {
   itineraries: string;
   price: string;
+  userId: string;
 }
 
 interface IResponse {
@@ -20,12 +21,11 @@ export default class CreateFlightService {
     this.flightsRepository = new FlightsRepository()
   }
 
-  async execute({ itineraries, price }: IRequest): Promise<IResponse> {
-    const flightPrice = JSON.parse(price) as Price;
-
+  async execute({ itineraries, price, userId }: IRequest): Promise<IResponse> {
     const flight = await this.flightsRepository.create({
       itineraries: JSON.parse(itineraries) as Prisma.JsonArray,
       price: JSON.parse(price) as Prisma.JsonObject,
+      userId
     });
     
     return {

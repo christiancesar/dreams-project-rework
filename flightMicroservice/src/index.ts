@@ -2,7 +2,7 @@ import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import FlightServiceProto from "./protos/implementations/FlightServiceProto";
 import { prisma } from '../prisma';
-import { FlightsService } from "dreams-proto-sharing/src/contracts/flight/flights_grpc_pb";
+import { FlightsService } from "dreams-proto-sharing/src/contracts/flight/flight_grpc_pb";
 
 const server = new Server()
 server.addService(FlightsService, new FlightServiceProto())

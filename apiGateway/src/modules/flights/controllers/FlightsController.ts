@@ -7,9 +7,9 @@ import ShowFlightService from "../services/ShowFlightService";
 export class FlightsController {
 
   async create(request: Request, response: Response): Promise<Response> {
-    const { itineraries, price } = request.body
+    const { itineraries, price, userId } = request.body
     const createFlightService = new CreateFlightService();
-    const flights = await createFlightService.execute({ itineraries, price })
+    const flights = await createFlightService.execute({ itineraries, price, userId })
     return response.json(flights)
   }
 

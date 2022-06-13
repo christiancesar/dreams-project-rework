@@ -304,9 +304,9 @@ diff@^4.0.1:
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 dreams-proto-sharing@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/dreams-proto-sharing/-/dreams-proto-sharing-1.0.0.tgz#1f26ce364a3485e833a5373bf850562cbe19363e"
-  integrity sha512-1JuAm9Ae9ZmB3tmoggI134t8BN8oWHApoui9mfRxtO0SM5OCz7hbeSs/VTbNZ1ksqH5FUWHmaUkeMCjaQQF02w==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dreams-proto-sharing/-/dreams-proto-sharing-1.0.1.tgz#c6256bfe1772168911c1cc35639c313f12a69bdc"
+  integrity sha512-R7Oyr7D0yUUF2mwr6EVoTyGsmtdCQ9MKdnPnMI7SAd5kZMevnCkVntrpNyifxOCGnKkKAItMpkJsXI5k55bULw==
   dependencies:
     "@grpc/grpc-js" "^1.6.7"
 
