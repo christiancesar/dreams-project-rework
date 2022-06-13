@@ -7,15 +7,43 @@ import {
   FlightOffersResponse,
   FlightCreateRequest,
   FlightResponse,
-  FlightShowRequest
+  FlightShowRequest,
+  FlightByUserRequest
 } from "dreams-proto-sharing/src/contracts/flight/flight_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import CreateFlightService from "../../services/CreateFlightService";
 import FlightOfferSearchService from '../../services/flightOffers/FlightOfferSearchService';
+import ListFlightsByUserService from "../../services/ListFlightsByUserService";
 import ListFlightsService from "../../services/ListFlightsService";
 import ShowFlightService from "../../services/ShowFlightService";
 
 class FlightServer implements IFlightsServer {
+  listFlightbyUser: handleUnaryCall<FlightByUserRequest, FlightListResponse> = async (call, callback): Promise<void> => {
+    try {
+      const userId = call.request.getUserid();
+
+      const flightListResponse = new FlightListResponse();
+      const listFlightsByUserService = new ListFlightsByUserService();
+
+      const flights = await listFlightsByUserService.execute({ userId });
+     
+      if (flights) {
+        flights.map((flight) => {
+          flightListResponse.addFlight(
+            new Flight().setId(flight.id)
+              .setItineraries(JSON.stringify(flight.itineraries))
+              .setPrice(JSON.stringify(flight.price))
+          );
+        })
+      }
+
+      callback(null, flightListResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
+
+  }
+
   createFlight: handleUnaryCall<FlightCreateRequest, FlightResponse> = async (call, callback): Promise<void> => {
     try {
       const flightRequest = call.request.getFlightcreate()!.toObject();

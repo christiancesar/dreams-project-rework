@@ -8,6 +8,8 @@ interface IFlightsRepository {
   create(data: ICreateFlightDTO): Promise<Flight>
   findByFlightId(flightId: string): Promise<Flight | null>
   findAll(): Promise<Flight[]>
+
+  findByUserId(userId: string): Promise<Flight[]>
 }
 
 export class FlightsRepository implements IFlightsRepository {
@@ -24,6 +26,12 @@ export class FlightsRepository implements IFlightsRepository {
   async findAll(): Promise<Flight[]> {
     const flight = await prisma.flight.findMany()
     return flight
+  }
+
+  async findByUserId(userId: string): Promise<Flight[]> {
+    const flights = await prisma.flight.findMany({ where: { userId } })
+
+    return flights
   }
 
 }

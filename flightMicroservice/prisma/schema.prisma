@@ -11,8 +11,7 @@ model Flight {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   itineraries Json
   price       Json
-  paymentId   String?  @db.ObjectId
-  userId      String?  @db.ObjectId
+  userId      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

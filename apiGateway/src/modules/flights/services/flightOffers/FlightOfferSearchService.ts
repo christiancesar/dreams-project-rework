@@ -1,5 +1,5 @@
-import flightClient from "../providers/FlightService";
-import { FlightOffer } from "../../../@types/amadeus/flights/FlightOfferSearchResponse";
+import flightClient from "../../providers/FlightService";
+import { FlightOffer } from "../../../../@types/amadeus/flights/FlightOfferSearchResponse";
 import { 
   FlightOffersRequest, 
   FlightOffersResponse, 

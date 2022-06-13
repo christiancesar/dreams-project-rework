@@ -3,7 +3,7 @@ import {
   FlightResponse,
   FlightShowRequest
 } from "dreams-proto-sharing/src/contracts/flight/flight_pb";
-import flightClient from "../providers/FlightService";
+import flightClient from "../../providers/FlightService";
 
 interface IFlight {
   flightId: string

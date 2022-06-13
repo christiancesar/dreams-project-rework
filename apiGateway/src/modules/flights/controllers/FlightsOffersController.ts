@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { FlightOfferSearchRequest } from "../../../@types/amadeus/flights/FlightOfferSearchRequest";
-import FlightOfferSearchService from "../services/FlightOfferSearchService";
+import FlightOfferSearchService from "../services/flightOffers/FlightOfferSearchService";
 
 interface IRequest {
   originLocationCode: string;
@@ -14,7 +13,7 @@ interface IRequest {
 }
 
 export default class FlightsOffersController {
-  
+
   async index(request: Request, response: Response): Promise<Response> {
 
     const {
