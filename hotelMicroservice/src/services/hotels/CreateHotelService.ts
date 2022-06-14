@@ -2,6 +2,7 @@ import { Hotel, Prisma } from "@prisma/client";
 import HotelsRepository from "../../repositories/implementations/HotelsRepository";
 
 interface IRequest {
+  userId: string;
   hotel: string;
   offers: string;
 }
@@ -20,10 +21,11 @@ export default class CreateHotelService {
     this.hotelsRepository = new HotelsRepository()
   }
 
-  async execute({ hotel, offers }: IRequest): Promise<IResponse> {
+  async execute({ hotel, offers, userId }: IRequest): Promise<IResponse> {
     const hotelCreated = await this.hotelsRepository.create({
       hotel: JSON.parse(hotel) as Prisma.JsonObject,
-      offers: JSON.parse(offers) as Prisma.JsonArray
+      offers: JSON.parse(offers) as Prisma.JsonArray,
+      userId
     });
 
     return {

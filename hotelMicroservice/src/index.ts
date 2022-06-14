@@ -4,7 +4,6 @@ import HotelServiceProto from "./protos/implementations/HotelServiceProto";
 import { prisma } from '../prisma';
 import { HotelsService } from "dreams-proto-sharing/src/contracts/hotel/hotel_grpc_pb";
 
-import 'dotenv/config'
 
 const server = new Server()
 server.addService(HotelsService, new HotelServiceProto())

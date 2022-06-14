@@ -6,8 +6,11 @@ interface IHotelsRepository {
   create(data: ICreateHotelDTO): Promise<Hotel>
   findByHotelId(hotelId: string): Promise<Hotel | null>
   findAllHotels(): Promise<Hotel[]>
+
+  findHotelsByUserId(userId: string): Promise<Hotel[]>
 }
 export default class HotelsRepository implements IHotelsRepository {
+  
   async create(data: ICreateHotelDTO): Promise<Hotel> {
     const hotel = await prisma.hotel.create({ data })
 
@@ -24,5 +27,9 @@ export default class HotelsRepository implements IHotelsRepository {
 
     return hotels;
   }
-
+  
+  async findHotelsByUserId(userId: string): Promise<Hotel[]> {
+    const hotels = await prisma.hotel.findMany({ where: { userId } })
+    return hotels;
+  }
 }

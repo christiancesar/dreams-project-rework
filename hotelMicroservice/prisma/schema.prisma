@@ -8,7 +8,10 @@ datasource db {
 }
 
 model Hotel {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  hotel  Json
-  offers Json
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  hotel     Json
+  offers    Json
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

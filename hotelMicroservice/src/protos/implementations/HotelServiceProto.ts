@@ -2,29 +2,54 @@ import { handleUnaryCall, ServerErrorResponse } from "@grpc/grpc-js";
 import { IHotelsServer } from "dreams-proto-sharing/src/contracts/hotel/hotel_grpc_pb";
 import {
   Hotel,
+  HotelsByUserRequest,
   HotelListResponse,
   HotelOffersRequest,
   HotelOffersResponse,
-  HotelRequest,
+  HotelCreateRequest,
   HotelResponse,
   HotelShowRequest
 } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 import HotelOfferSearchService from "../../services/hotelOffers/HotelOffersSearchService";
 import CreateHotelService from "../../services/hotels/CreateHotelService";
+import ListHotelsByUserService from "../../services/hotels/ListHotelsByUserService";
 import ListHotelsService from "../../services/hotels/ListHotelsService";
 import ShowHotelService from "../../services/hotels/ShowHotelService";
 
 class HotelServer implements IHotelsServer {
-  createHotel: handleUnaryCall<HotelRequest, HotelResponse> = async (call, callback): Promise<void> => {
+  listHotelByUser: handleUnaryCall<HotelsByUserRequest, HotelListResponse> = async (call, callback): Promise<void> => {
     try {
-      const hotelRequest = call.request.toObject();
+      const userId = call.request.getUserid();
+      const hotelListResponse = new HotelListResponse();
+      const listHotelsByUserService = new ListHotelsByUserService();
+
+      const hotels = await listHotelsByUserService.execute({ userId });
+
+      hotels.map((hotel) => {
+        hotelListResponse.addHotel(
+          new Hotel().setId(hotel.id)
+            .setHotel(JSON.stringify(hotel.hotel))
+            .setOffers(JSON.stringify(hotel.offers))
+        );
+      })
+
+      callback(null, hotelListResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
+  }
+
+  createHotel: handleUnaryCall<HotelCreateRequest, HotelResponse> = async (call, callback): Promise<void> => {
+    try {
+      const hotelRequest = call.request.getHotelcreate()!.toObject();
       const hotelResponse = new HotelResponse();
       const createHotelService = new CreateHotelService();
 
       const hotel = await createHotelService.execute({
         hotel: hotelRequest.hotel,
-        offers: hotelRequest.offers
+        offers: hotelRequest.offers,
+        userId: hotelRequest.userid
       })
 
       hotelResponse.setHotel(
