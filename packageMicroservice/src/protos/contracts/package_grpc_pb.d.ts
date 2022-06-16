@@ -6,10 +6,10 @@
 
 import * as grpc from "@grpc/grpc-js";
 import * as package_pb from "./package_pb";
-import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 
 interface IPackagesService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     searchPackage: IPackagesService_IsearchPackage;
+    createPackage: IPackagesService_IcreatePackage;
 }
 
 interface IPackagesService_IsearchPackage extends grpc.MethodDefinition<package_pb.PackageSearchRequest, package_pb.PackageSearchResponse> {
@@ -21,17 +21,30 @@ interface IPackagesService_IsearchPackage extends grpc.MethodDefinition<package_
     responseSerialize: grpc.serialize<package_pb.PackageSearchResponse>;
     responseDeserialize: grpc.deserialize<package_pb.PackageSearchResponse>;
 }
+interface IPackagesService_IcreatePackage extends grpc.MethodDefinition<package_pb.PackageCreateRequest, package_pb.PackageCreatedResponse> {
+    path: "/packagetrip.Packages/createPackage";
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<package_pb.PackageCreateRequest>;
+    requestDeserialize: grpc.deserialize<package_pb.PackageCreateRequest>;
+    responseSerialize: grpc.serialize<package_pb.PackageCreatedResponse>;
+    responseDeserialize: grpc.deserialize<package_pb.PackageCreatedResponse>;
+}
 
 export const PackagesService: IPackagesService;
 
 export interface IPackagesServer extends grpc.UntypedServiceImplementation {
     searchPackage: grpc.handleUnaryCall<package_pb.PackageSearchRequest, package_pb.PackageSearchResponse>;
+    createPackage: grpc.handleUnaryCall<package_pb.PackageCreateRequest, package_pb.PackageCreatedResponse>;
 }
 
 export interface IPackagesClient {
     searchPackage(request: package_pb.PackageSearchRequest, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
     searchPackage(request: package_pb.PackageSearchRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
     searchPackage(request: package_pb.PackageSearchRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
+    createPackage(request: package_pb.PackageCreateRequest, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
+    createPackage(request: package_pb.PackageCreateRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
+    createPackage(request: package_pb.PackageCreateRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
 }
 
 export class PackagesClient extends grpc.Client implements IPackagesClient {
@@ -39,4 +52,7 @@ export class PackagesClient extends grpc.Client implements IPackagesClient {
     public searchPackage(request: package_pb.PackageSearchRequest, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
     public searchPackage(request: package_pb.PackageSearchRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
     public searchPackage(request: package_pb.PackageSearchRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: package_pb.PackageSearchResponse) => void): grpc.ClientUnaryCall;
+    public createPackage(request: package_pb.PackageCreateRequest, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
+    public createPackage(request: package_pb.PackageCreateRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
+    public createPackage(request: package_pb.PackageCreateRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: package_pb.PackageCreatedResponse) => void): grpc.ClientUnaryCall;
 }

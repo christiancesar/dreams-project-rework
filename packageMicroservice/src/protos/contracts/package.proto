@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package packagetrip;
 
-import "google/protobuf/empty.proto";
-
 message PackageSearch {
   string originLocationCode = 1;
   string destinationLocationCode = 2;
@@ -25,9 +23,41 @@ message PackageSearchRequest {
   PackageSearch packageSearch = 1;
 }
 
+message Flight {
+  string intinerantes = 1;
+  string price = 2;
+}
+
+message Hotel {
+  string hotel = 1;
+  string offers = 2;
+}
+
+message PackageCreate {
+  string userId = 1;
+  Flight flight = 2;
+  Hotel hotel = 3;
+}
+
+message PackageCreateRequest {
+  PackageCreate packageCreate = 1;
+}
+
+message PackageCreated {
+  string id = 1;
+  Flight flight = 2;
+  Hotel hotel = 3;
+  int64 updatedAt = 4;
+  int64 createdAt = 5;
+}
+
+message PackageCreatedResponse {
+  PackageCreated packageResponse = 1;
+}
+
 service Packages {
   rpc searchPackage(PackageSearchRequest) returns (PackageSearchResponse);
-  // rpc createPackage(PackageRequest) returns (PackageResponse);
+  rpc createPackage(PackageCreateRequest) returns (PackageCreatedResponse);
   // rpc listPackages(google.protobuf.Empty) returns (PackageResponse);
   // rpc showPackage(PackageRequest) returns (PackageResponse);
   // rpc updatePackage(PackageRequest) returns (PackageResponse);

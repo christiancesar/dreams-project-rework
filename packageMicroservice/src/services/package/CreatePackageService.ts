@@ -18,8 +18,14 @@ interface ICreateHotelDTO {
 
 interface IPackageRequestDTO {
   userId: string;
-  hotel: ICreateHotelDTO;
-  flight: ICreateFlightDTO;
+  hotel: {
+    hotel: string;
+    offers: string;
+  };
+  flight: {
+    itineraries: string;
+    price: string;
+  };
 }
 
 interface IPackageResponseDTO {
@@ -32,14 +38,14 @@ interface IPackageResponseDTO {
     itineraries: string;
     price: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 
-class CreatePackage {
+class CreatePackageService {
   private packageRepository: PackageRepository;
-  
-  constructor(){
+
+  constructor() {
     this.packageRepository = new PackageRepository();
   }
 
@@ -65,10 +71,10 @@ class CreatePackage {
     const flightResponse = await createFlightServiceRequest({
       itineraries: flight.itineraries,
       price: flight.price,
-      userId: flight.userId
+      userId
     }
     )
-    
+
     const createHotelServiceRequest = (hotel: ICreateHotelDTO) => new Promise<HotelResponse>((resolve, reject) => {
       hotelClient.createHotel(
         new HotelCreateRequest().setHotelcreate(
@@ -86,33 +92,33 @@ class CreatePackage {
       );
     });
 
-    const hotelResponse = await createHotelServiceRequest({ 
-      hotel: hotel.hotel, 
-      offers: hotel.offers, 
-      userId 
+    const hotelResponse = await createHotelServiceRequest({
+      hotel: hotel.hotel,
+      offers: hotel.offers,
+      userId
     })
 
     const packageCreated = await this.packageRepository.create({
       userId,
       flightId: flightResponse.getFlight()!.getId(),
       hotelId: hotelResponse.getHotel()!.getId()
-      
+
     });
 
     return {
-      id : packageCreated.id,
-      hotel : {
+      id: packageCreated.id,
+      hotel: {
         hotel: hotelResponse.getHotel()!.getHotel(),
         offers: hotelResponse.getHotel()!.getOffers(),
       },
-      flight : { 
-        itineraries:  flightResponse.getFlight()!.getItineraries(),
+      flight: {
+        itineraries: flightResponse.getFlight()!.getItineraries(),
         price: flightResponse.getFlight()!.getPrice()
       },
-      createdAt : packageCreated.createdAt,
-      updatedAt : packageCreated.updatedAt,
-    } as IPackageResponseDTO;
+      createdAt: Date.parse(packageCreated.createdAt.toDateString()),
+      updatedAt: Date.parse(packageCreated.updatedAt.toDateString()),
+    }
   }
 }
 
-export default CreatePackage
+export default CreatePackageService
