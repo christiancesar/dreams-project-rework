@@ -1,4 +1,4 @@
-import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "dreams-proto-sharing/src/contracts/flight/flights_pb";
+import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "dreams-proto-sharing/src/contracts/flight/flight_pb";
 import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import Package from "../../dtos/IPackage";
 import { IPackageRequest } from "../../dtos/IPackageRequest";
