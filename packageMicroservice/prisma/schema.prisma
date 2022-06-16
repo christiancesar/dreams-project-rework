@@ -12,6 +12,8 @@ model Package {
   hotelId   String
   flightId  String
   userId    String
+  amount    Float
+  off       Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

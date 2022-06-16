@@ -1,38 +1,53 @@
-# Features
-- [X] apiGateway - centraliza as chamas para os outros serviços
-  
-  - Atualmente se parece mais com um Monólito do que um Microsserviço
-  
-  - Poderia aplicar o pattern Strangle, mostraria o progresso de uma aplicação monolítica -> microsserviços
-
-- [X] emailService - responsável disparar emails seja independente do serviço que solicita.
-
-- [x] userService - Serviço responsável pelo cadastro, autenticação e manutenção do usuário.
-    
-  - [x] Servidor
-    
-  - [x] Banco de dados 
-    
-  - [x] CRUD 
-    
-  - [x] Comunicando com ApiGateway 
-    
-  - [ ] Comunicando com emailService
-
-- [ ] flightService 
-
-  - [x] Serviço de pesquisa de voos, pesquisa em uma ou mais apis
-
-  - [x] Confirmar/comprar passagem area, deve persistir dentro do banco de dados
-
-- [x] hotelService - Serviço de pesquisa de hotel, pesquisa em uma ou mais apis
+# To-do
 
 - [ ] Capturar erros e enviar erros para o client, que não seja `Internal Error`
-- [ ] packageService - Constrói ou monta pacotes de viagens, de acordo com os parâmetros que o usuário informar. Faz uso dos dois serviços flightService e hotelService.
+
+- [ ] packageService 
+  - [x] Consultar serviço de voo e hotel para montar pacote
+  - [ ] Salvar no banco de dados do Package Microservice
+  - [ ] Salvar no banco de dados do Flight Microservices o do pacote voo
+  - [ ] Salvar no banco de dados do Hotel Microservices o do pacote voo
+  - [x] Estrutura
   
-- [ ] Reforar UsersService para persistir dados de viagens:
+  ```ts
+    model Package {
+      id        String   @id @default(auto()) @map("_id") @db.ObjectId
+      hotelId   String   @db.ObjectId
+      flightId  String   @db.ObjectId
+      userId    String   @db.ObjectId
+      createdAt DateTime @default(now())
+      updatedAt DateTime @updatedAt
+    }
+  ```
+
+- [ ] Refatorar models Hotel, Flight e Package: Incluir objeto pagamento.
   
   ```typescript
+    //incluir em todos models
+    createAt: Date();
+    updateAt: Date();
+
+    enum StatusPayment {
+      PENDENTE="PENDENTE",
+      RECUSADO="RECUSADO",
+      PAGO="PAGO",
+    }
+
+    type payment = {
+      amount: number;
+      status: StatusPayment;
+      createAt: Date();
+      updateAt: Date();
+    }
+  ```
+
+
+
+    
+## ApiGateway
+  - Objeto User tem de retornar para o cliente todos os dados em uma única consulta:
+  
+    ```typescript
     type user = {
       id : "a8b70b8f-f069-4187-bcc9-3edc6f833678",
       email : "christian.cesar@gmail.com",
@@ -40,35 +55,133 @@
       lastName : "Rodrigues",
       age : 24,
       birthday : "1997-11-01",
-      payments: [
-        "dd600698-6e54-4d7a-80a6-e1924dad4092"
-      ],
       trips: {
         packages: [
-          "6283864c-b63a-4782-9447-27e67528d353",
-          "2b0be2a7-c650-47c4-8657-198fff173087"        
+          {
+            //all fields
+          },
+          {
+            //all fields
+          }      
         ],
         flights: [
-          "4c51b8c3-e1cd-4807-adb5-af804dd9ea53"
+          {
+            //all fields
+          }
         ],
         hotels: [
-          "50cde896-7776-41ba-8353-8f347c03cbd5"
+          {
+            //all fields
+          }
         ]
       }
     }
-    ```
-
-# Requisitos
-
-## Funcionais
-
-- [x] Cliente(FrontEnd, Insomnia ou PostMan) deve ser capaz de escolher pesquisar voos, hotéis ou pacote(voos e hotéis), disponível para determinada região.
+  ```
+  - **Trips:** retorna todo pacote, voo ou hotel. 
+    - Retorna apenas Id's é a melhor solução? Retornando apenas Id's o consumo de recursos aumenta e o cliente vai ficar esperando de mais, dependendo da quantidade de histórico.
 
 
-## Não Funcionais
+# Features
 
-- [x] Cada serviço deve conter seu próprio banco de dados, deve ser usado MongoDb. Dada as circunstâncias, MongoDb traz uma complexidade baixa e é um ótimo banco de dados para trabalhar com arquivos grandes.
+## Tipificação de dados
 
-- [x] A comunicação deve ser feita com gRPC, desenvolvi um pequeno exemplo em TypeScript [gRPC with TypeScript](https://github.com/christiancesar/grpc-with-typescript)
+ - Incluir todas as tipificações no models do prisma dos microsserviços. Atualmente eu salvo ele como sendo um tipo **Prisma.JSONObject** ou **Prisma.JSONArray**.
 
-- [ ] Cada serviço deve ser subir em containers separados, aprender a mexer com docker-compose 😄😅
+ - Porém gera muitos models desnecessários. Enquanto a necessidade era apenas de tipificar. O Prisma tem algo de tipificação personalizada, porém não entrei muito a fundo.
+
+ 
+ ```ts
+ //schema.prisma
+  
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+  }
+  
+  model Itinerary {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    duration String
+    segments Segment[]
+    Flight   Flight?   @relation(fields: [flightId], references: [id])
+    flightId String?   @db.ObjectId
+  }
+  
+  model Segment {
+    id              String     @id @default(auto()) @map("_id") @db.ObjectId
+    departure       Departure  @relation(fields: [departureId], references: [id])
+    arrival         Arrival    @relation(fields: [arrivalId], references: [id])
+    carrierCode     String
+    number          String
+    aircraft        Aircraft   @relation(fields: [aircraftId], references: [id])
+    operating       Operating  @relation(fields: [operatingId], references: [id])
+    duration        String
+    segmentId       String
+    numberOfStops   Int
+    blacklistedInEU Boolean
+    Itinerary       Itinerary? @relation(fields: [itineraryId], references: [id])
+    itineraryId     String?    @db.ObjectId
+    arrivalId       String     @db.ObjectId
+    departureId     String     @db.ObjectId
+    aircraftId      String     @db.ObjectId
+    operatingId     String     @db.ObjectId
+  }
+  
+  model Aircraft {
+    id      String    @id @default(auto()) @map("_id") @db.ObjectId
+    code    String
+    Segment Segment[]
+  }
+  
+  model Departure {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    iataCode String
+    at       String
+    Segment  Segment[]
+  }
+  
+  model Arrival {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    iataCode String
+    at       String
+    Segment  Segment[]
+  }
+  
+  model Operating {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    carrierCode String
+    Segment     Segment[]
+  }
+  
+  enum StatusPayment {
+    PENDING
+    REFUSED
+    PAID
+  }
+  
+  model Payment {
+    id        String        @id @default(auto()) @map("_id") @db.ObjectId
+    amount    Float
+    status    StatusPayment @default(PENDING)
+    Flight    Flight[]
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+  }
+  
+  model Flight {
+    id          String      @id @default(auto()) @map("_id") @db.ObjectId
+    itineraries Itinerary[]
+    price       Json
+    payment     Payment     @relation(fields: [paymentId], references: [id])
+    paymentId   String      @db.ObjectId
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+  
+  }
+
+ ```
+
+ 

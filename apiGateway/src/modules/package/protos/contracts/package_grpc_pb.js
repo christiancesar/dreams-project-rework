@@ -3,7 +3,28 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var package_pb = require('./package_pb.js');
-var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+
+function serialize_packagetrip_PackageCreateRequest(arg) {
+  if (!(arg instanceof package_pb.PackageCreateRequest)) {
+    throw new Error('Expected argument of type packagetrip.PackageCreateRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_packagetrip_PackageCreateRequest(buffer_arg) {
+  return package_pb.PackageCreateRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_packagetrip_PackageCreatedResponse(arg) {
+  if (!(arg instanceof package_pb.PackageCreatedResponse)) {
+    throw new Error('Expected argument of type packagetrip.PackageCreatedResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_packagetrip_PackageCreatedResponse(buffer_arg) {
+  return package_pb.PackageCreatedResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
 
 function serialize_packagetrip_PackageSearchRequest(arg) {
   if (!(arg instanceof package_pb.PackageSearchRequest)) {
@@ -40,8 +61,18 @@ var PackagesService = exports.PackagesService = {
     responseSerialize: serialize_packagetrip_PackageSearchResponse,
     responseDeserialize: deserialize_packagetrip_PackageSearchResponse,
   },
-  // rpc createPackage(PackageRequest) returns (PackageResponse);
-// rpc listPackages(google.protobuf.Empty) returns (PackageResponse);
+  createPackage: {
+    path: '/packagetrip.Packages/createPackage',
+    requestStream: false,
+    responseStream: false,
+    requestType: package_pb.PackageCreateRequest,
+    responseType: package_pb.PackageCreatedResponse,
+    requestSerialize: serialize_packagetrip_PackageCreateRequest,
+    requestDeserialize: deserialize_packagetrip_PackageCreateRequest,
+    responseSerialize: serialize_packagetrip_PackageCreatedResponse,
+    responseDeserialize: deserialize_packagetrip_PackageCreatedResponse,
+  },
+  // rpc listPackages(google.protobuf.Empty) returns (PackageResponse);
 // rpc showPackage(PackageRequest) returns (PackageResponse);
 // rpc updatePackage(PackageRequest) returns (PackageResponse);
 };

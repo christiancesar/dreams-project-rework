@@ -16,7 +16,7 @@ interface ICreateHotelDTO {
   offers: string;
 }
 
-interface IPackageRequestDTO {
+interface IPackageCreateRequestDTO {
   userId: string;
   hotel: {
     hotel: string;
@@ -28,7 +28,7 @@ interface IPackageRequestDTO {
   };
 }
 
-interface IPackageResponseDTO {
+interface IPackageCreateResponseDTO {
   id: string
   hotel: {
     hotel: string;
@@ -49,7 +49,7 @@ class CreatePackageService {
     this.packageRepository = new PackageRepository();
   }
 
-  async execute({ userId, hotel, flight }: IPackageRequestDTO): Promise<IPackageResponseDTO> {
+  async execute({ userId, hotel, flight }: IPackageCreateRequestDTO): Promise<IPackageCreateResponseDTO> {
 
     const createFlightServiceRequest = (flight: ICreateFlightDTO) => new Promise<FlightResponse>((resolve, reject) => {
       flightClient.createFlight(

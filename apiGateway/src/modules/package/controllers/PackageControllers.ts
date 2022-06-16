@@ -1,35 +1,18 @@
-import { Request, Response } from "express";
-import { IPackageRequest } from "../dtos/IPackageRequest";
-import AssemblingPackageService from "../services/packageOffers/AssemblingPackageService";
+import { Request, Response } from "express"
+import CreatePackageService from "../services/packages/CreatePackageService"
 
-const assemblingPackageService = new AssemblingPackageService()
+class PackageControllers {
 
-export default class PackageControllers {
-  async index(request: Request, response: Response): Promise<Response> {
-    const {
-      adults,
-      children,
-      departureDate,
-      destinationLocationCode,
-      infants,
-      originLocationCode,
-      returnDate,
-      travelClass,
-      roomQuantity
-    } = request.body as IPackageRequest;
+  async create(request: Request, response: Response): Promise<Response> {
+    const { userId, flight, hotel } = request.body;
 
-    const packages = await assemblingPackageService.execute({
-      adults,
-      children,
-      departureDate,
-      destinationLocationCode,
-      infants,
-      originLocationCode,
-      returnDate,
-      travelClass,
-      roomQuantity
-    })
+    const createPackageService = new CreatePackageService();
 
-    return response.json(packages)
+    const packageCreated = await createPackageService.execute({ userId, flight, hotel })
+
+    return response.json(packageCreated)
   }
+
 }
+
+export default PackageControllers
