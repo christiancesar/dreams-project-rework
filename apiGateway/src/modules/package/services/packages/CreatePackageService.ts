@@ -11,6 +11,8 @@ interface IPackageCreateRequestDTO {
     itineraries: string;
     price: string;
   };
+  amount: number;
+  off: number;
 }
 
 interface IPackageRequest {
@@ -23,6 +25,8 @@ interface IPackageRequest {
     itineraries: any;
     price: any;
   };
+  amount: number;
+  off: number;
 }
 
 interface IPackageResponse {
@@ -37,10 +41,12 @@ interface IPackageResponse {
   };
   createdAt: Date;
   updatedAt: Date;
+  amount: number;
+  off: number;
 }
 
 class CreatePackageService {
-  async execute({ userId, flight, hotel }: IPackageRequest): Promise<IPackageResponse> {
+  async execute({ userId, flight, hotel, amount, off }: IPackageRequest): Promise<IPackageResponse> {
 
 
     const packageCreateRequest = (packageCreate: IPackageCreateRequestDTO) => new Promise<PackageCreatedResponse>((resolve, reject) => {
@@ -58,6 +64,8 @@ class CreatePackageService {
                 .setHotel(packageCreate.hotel.hotel)
                 .setOffers(packageCreate.hotel.offers)
             )
+            .setAmount(packageCreate.amount)
+            .setOff(packageCreate.off)
         ), (err, packages) => {
           if (err) {
             reject(err);
@@ -73,15 +81,17 @@ class CreatePackageService {
         itineraries: JSON.stringify(flight.itineraries),
         price: JSON.stringify(flight.price)
       },
-      hotel: { 
+      hotel: {
         hotel: JSON.stringify(hotel.hotel),
         offers: JSON.stringify(hotel.offers)
-      }
+      },
+      amount,
+      off
     })
 
     const packageResponse = packageCreatedResponse.getPackageresponse()!.toObject();
 
-    return { 
+    return {
       id: packageResponse.id,
       flight: {
         itineraries: JSON.parse(packageResponse.flight!.intinerantes),
@@ -91,6 +101,8 @@ class CreatePackageService {
         hotel: JSON.parse(packageResponse.hotel!.hotel),
         offers: JSON.parse(packageResponse.hotel!.offers)
       },
+      amount: packageResponse.amount,
+      off: packageResponse.off,
       createdAt: new Date(packageResponse.createdat),
       updatedAt: new Date(packageResponse.updatedat),
     }

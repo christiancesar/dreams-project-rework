@@ -30,7 +30,9 @@ class PackagesServer implements IPackagesServer {
         hotel: {
           hotel: packageRequest.hotel!.hotel,
           offers: packageRequest.hotel!.offers
-        }
+        },
+        amount: packageRequest.amount,
+        off: packageRequest.off
       });
 
       packageResponse.setPackageresponse(
@@ -46,6 +48,8 @@ class PackagesServer implements IPackagesServer {
               .setHotel(packageCreated.hotel.hotel)
               .setOffers(packageCreated.hotel.offers)
           )
+          .setAmount(packageCreated.amount)
+          .setOff(packageCreated.off)
           .setUpdatedat(packageCreated.updatedAt)
           .setCreatedat(packageCreated.createdAt)
       );

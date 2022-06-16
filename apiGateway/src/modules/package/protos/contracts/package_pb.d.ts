@@ -152,6 +152,10 @@ export class PackageCreate extends jspb.Message {
     clearHotel(): void;
     getHotel(): Hotel | undefined;
     setHotel(value?: Hotel): PackageCreate;
+    getAmount(): number;
+    setAmount(value: number): PackageCreate;
+    getOff(): number;
+    setOff(value: number): PackageCreate;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): PackageCreate.AsObject;
@@ -168,6 +172,8 @@ export namespace PackageCreate {
         userid: string,
         flight?: Flight.AsObject,
         hotel?: Hotel.AsObject,
+        amount: number,
+        off: number,
     }
 }
 
@@ -207,6 +213,10 @@ export class PackageCreated extends jspb.Message {
     clearHotel(): void;
     getHotel(): Hotel | undefined;
     setHotel(value?: Hotel): PackageCreated;
+    getAmount(): number;
+    setAmount(value: number): PackageCreated;
+    getOff(): number;
+    setOff(value: number): PackageCreated;
     getUpdatedat(): number;
     setUpdatedat(value: number): PackageCreated;
     getCreatedat(): number;
@@ -227,6 +237,8 @@ export namespace PackageCreated {
         id: string,
         flight?: Flight.AsObject,
         hotel?: Hotel.AsObject,
+        amount: number,
+        off: number,
         updatedat: number,
         createdat: number,
     }

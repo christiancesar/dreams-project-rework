@@ -1,4 +1,4 @@
-import { Hotel } from "@prisma/client"
+import { Hotel, Prisma } from "@prisma/client"
 import { prisma } from "../../../prisma"
 import ICreateHotelDTO from "../../dtos/ICreateHotelDTO"
 
@@ -10,11 +10,17 @@ interface IHotelsRepository {
   findHotelsByUserId(userId: string): Promise<Hotel[]>
 }
 export default class HotelsRepository implements IHotelsRepository {
-  
-  async create(data: ICreateHotelDTO): Promise<Hotel> {
-    const hotel = await prisma.hotel.create({ data })
 
-    return hotel
+  async create({ hotel, offers, userId }: ICreateHotelDTO): Promise<Hotel> {
+    const hotelCreated = await prisma.hotel.create({
+      data: {
+        userId,
+        hotel: JSON.parse(hotel) as Prisma.JsonObject,
+        offers: JSON.parse(offers) as Prisma.JsonArray,
+      }
+    })
+
+    return hotelCreated
   }
 
   async findByHotelId(hotelId: string): Promise<Hotel | null> {
@@ -27,7 +33,7 @@ export default class HotelsRepository implements IHotelsRepository {
 
     return hotels;
   }
-  
+
   async findHotelsByUserId(userId: string): Promise<Hotel[]> {
     const hotels = await prisma.hotel.findMany({ where: { userId } })
     return hotels;

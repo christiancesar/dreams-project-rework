@@ -23,8 +23,8 @@ export default class CreateFlightService {
 
   async execute({ itineraries, price, userId }: IRequest): Promise<IResponse> {
     const flight = await this.flightsRepository.create({
-      itineraries: JSON.parse(itineraries) as Prisma.JsonArray,
-      price: JSON.parse(price) as Prisma.JsonObject,
+      itineraries,
+      price,
       userId
     });
     

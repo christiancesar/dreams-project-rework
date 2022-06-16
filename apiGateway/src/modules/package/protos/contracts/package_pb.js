@@ -1218,7 +1218,9 @@ proto.packagetrip.PackageCreate.toObject = function(includeInstance, msg) {
   var f, obj = {
     userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     flight: (f = msg.getFlight()) && proto.packagetrip.Flight.toObject(includeInstance, f),
-    hotel: (f = msg.getHotel()) && proto.packagetrip.Hotel.toObject(includeInstance, f)
+    hotel: (f = msg.getHotel()) && proto.packagetrip.Hotel.toObject(includeInstance, f),
+    amount: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    off: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0)
   };
 
   if (includeInstance) {
@@ -1268,6 +1270,14 @@ proto.packagetrip.PackageCreate.deserializeBinaryFromReader = function(msg, read
       var value = new proto.packagetrip.Hotel;
       reader.readMessage(value,proto.packagetrip.Hotel.deserializeBinaryFromReader);
       msg.setHotel(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setAmount(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setOff(value);
       break;
     default:
       reader.skipField();
@@ -1319,6 +1329,20 @@ proto.packagetrip.PackageCreate.serializeBinaryToWriter = function(message, writ
       3,
       f,
       proto.packagetrip.Hotel.serializeBinaryToWriter
+    );
+  }
+  f = message.getAmount();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      4,
+      f
+    );
+  }
+  f = message.getOff();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      5,
+      f
     );
   }
 };
@@ -1413,6 +1437,42 @@ proto.packagetrip.PackageCreate.prototype.clearHotel = function() {
  */
 proto.packagetrip.PackageCreate.prototype.hasHotel = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional float amount = 4;
+ * @return {number}
+ */
+proto.packagetrip.PackageCreate.prototype.getAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.packagetrip.PackageCreate} returns this
+ */
+proto.packagetrip.PackageCreate.prototype.setAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional float off = 5;
+ * @return {number}
+ */
+proto.packagetrip.PackageCreate.prototype.getOff = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.packagetrip.PackageCreate} returns this
+ */
+proto.packagetrip.PackageCreate.prototype.setOff = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
 };
 
 
@@ -1602,8 +1662,10 @@ proto.packagetrip.PackageCreated.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     flight: (f = msg.getFlight()) && proto.packagetrip.Flight.toObject(includeInstance, f),
     hotel: (f = msg.getHotel()) && proto.packagetrip.Hotel.toObject(includeInstance, f),
-    updatedat: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    createdat: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    amount: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    off: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    updatedat: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    createdat: jspb.Message.getFieldWithDefault(msg, 7, 0)
   };
 
   if (includeInstance) {
@@ -1655,10 +1717,18 @@ proto.packagetrip.PackageCreated.deserializeBinaryFromReader = function(msg, rea
       msg.setHotel(value);
       break;
     case 4:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setAmount(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setOff(value);
+      break;
+    case 6:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setUpdatedat(value);
       break;
-    case 5:
+    case 7:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setCreatedat(value);
       break;
@@ -1714,17 +1784,31 @@ proto.packagetrip.PackageCreated.serializeBinaryToWriter = function(message, wri
       proto.packagetrip.Hotel.serializeBinaryToWriter
     );
   }
+  f = message.getAmount();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      4,
+      f
+    );
+  }
+  f = message.getOff();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      5,
+      f
+    );
+  }
   f = message.getUpdatedat();
   if (f !== 0) {
     writer.writeInt64(
-      4,
+      6,
       f
     );
   }
   f = message.getCreatedat();
   if (f !== 0) {
     writer.writeInt64(
-      5,
+      7,
       f
     );
   }
@@ -1824,11 +1908,47 @@ proto.packagetrip.PackageCreated.prototype.hasHotel = function() {
 
 
 /**
- * optional int64 updatedAt = 4;
+ * optional float amount = 4;
+ * @return {number}
+ */
+proto.packagetrip.PackageCreated.prototype.getAmount = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.packagetrip.PackageCreated} returns this
+ */
+proto.packagetrip.PackageCreated.prototype.setAmount = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional float off = 5;
+ * @return {number}
+ */
+proto.packagetrip.PackageCreated.prototype.getOff = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.packagetrip.PackageCreated} returns this
+ */
+proto.packagetrip.PackageCreated.prototype.setOff = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
+};
+
+
+/**
+ * optional int64 updatedAt = 6;
  * @return {number}
  */
 proto.packagetrip.PackageCreated.prototype.getUpdatedat = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
@@ -1837,16 +1957,16 @@ proto.packagetrip.PackageCreated.prototype.getUpdatedat = function() {
  * @return {!proto.packagetrip.PackageCreated} returns this
  */
 proto.packagetrip.PackageCreated.prototype.setUpdatedat = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
+  return jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
 /**
- * optional int64 createdAt = 5;
+ * optional int64 createdAt = 7;
  * @return {number}
  */
 proto.packagetrip.PackageCreated.prototype.getCreatedat = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
 };
 
 
@@ -1855,7 +1975,7 @@ proto.packagetrip.PackageCreated.prototype.getCreatedat = function() {
  * @return {!proto.packagetrip.PackageCreated} returns this
  */
 proto.packagetrip.PackageCreated.prototype.setCreatedat = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
+  return jspb.Message.setProto3IntField(this, 7, value);
 };
 
 

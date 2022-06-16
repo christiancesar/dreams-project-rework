@@ -1,4 +1,4 @@
-import { Flight } from "@prisma/client"
+import { Flight, Prisma } from "@prisma/client"
 import { prisma } from "../../../prisma"
 import { ICreateFlightDTO } from "../../dtos/ICreateFlightDTO"
 
@@ -13,8 +13,14 @@ interface IFlightsRepository {
 }
 
 export class FlightsRepository implements IFlightsRepository {
-  async create(data: ICreateFlightDTO): Promise<Flight> {
-    const flight = await prisma.flight.create({ data })
+  async create({ userId, itineraries, price }: ICreateFlightDTO): Promise<Flight> {
+    const flight = await prisma.flight.create({
+      data: {
+        userId,
+        itineraries: JSON.parse(itineraries) as Prisma.JsonArray,
+        price: JSON.parse(price) as Prisma.JsonObject,
+      }
+    })
     return flight
   }
 

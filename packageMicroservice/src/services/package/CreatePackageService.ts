@@ -26,6 +26,8 @@ interface IPackageCreateRequestDTO {
     itineraries: string;
     price: string;
   };
+  amount: number;
+  off: number;
 }
 
 interface IPackageCreateResponseDTO {
@@ -38,6 +40,8 @@ interface IPackageCreateResponseDTO {
     itineraries: string;
     price: string;
   };
+  amount: number;
+  off: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -49,7 +53,7 @@ class CreatePackageService {
     this.packageRepository = new PackageRepository();
   }
 
-  async execute({ userId, hotel, flight }: IPackageCreateRequestDTO): Promise<IPackageCreateResponseDTO> {
+  async execute({ userId, hotel, flight, amount, off }: IPackageCreateRequestDTO): Promise<IPackageCreateResponseDTO> {
 
     const createFlightServiceRequest = (flight: ICreateFlightDTO) => new Promise<FlightResponse>((resolve, reject) => {
       flightClient.createFlight(
@@ -68,12 +72,13 @@ class CreatePackageService {
       );
     });
 
-    const flightResponse = await createFlightServiceRequest({
+    const createFlightResponse = await createFlightServiceRequest({
       itineraries: flight.itineraries,
       price: flight.price,
       userId
-    }
-    )
+    });
+
+    const flightResponse = createFlightResponse.getFlight()!.toObject();
 
     const createHotelServiceRequest = (hotel: ICreateHotelDTO) => new Promise<HotelResponse>((resolve, reject) => {
       hotelClient.createHotel(
@@ -92,29 +97,34 @@ class CreatePackageService {
       );
     });
 
-    const hotelResponse = await createHotelServiceRequest({
+    const createHotelResponse = await createHotelServiceRequest({
       hotel: hotel.hotel,
       offers: hotel.offers,
       userId
     })
 
+    const hotelResponse = createHotelResponse.getHotel()!.toObject();
+
     const packageCreated = await this.packageRepository.create({
       userId,
-      flightId: flightResponse.getFlight()!.getId(),
-      hotelId: hotelResponse.getHotel()!.getId()
-
+      flightId: flightResponse.id,
+      hotelId: hotelResponse.id,
+      amount,
+      off
     });
 
     return {
       id: packageCreated.id,
       hotel: {
-        hotel: hotelResponse.getHotel()!.getHotel(),
-        offers: hotelResponse.getHotel()!.getOffers(),
+        hotel: hotelResponse.hotel,
+        offers: hotelResponse.offers,
       },
       flight: {
-        itineraries: flightResponse.getFlight()!.getItineraries(),
-        price: flightResponse.getFlight()!.getPrice()
+        itineraries: flightResponse.itineraries,
+        price: flightResponse.price,
       },
+      amount: packageCreated.amount,
+      off: packageCreated.off,
       createdAt: Date.parse(packageCreated.createdAt.toDateString()),
       updatedAt: Date.parse(packageCreated.updatedAt.toDateString()),
     }
