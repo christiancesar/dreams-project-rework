@@ -2,7 +2,7 @@
 import grpc, { ServerErrorResponse } from "@grpc/grpc-js";
 import CreatePackageService from "../../services/package/CreatePackageService";
 import AssemblingPackageService from "../../services/packageOffers/AssemblingPackageService";
-import { IPackagesServer } from "../contracts/package_grpc_pb";
+import { IPackagesServer } from "dreams-proto-sharing/src/contracts/package/package_grpc_pb";
 import {
   Flight,
   Hotel,
@@ -11,7 +11,7 @@ import {
   PackageCreateRequest,
   PackageSearchRequest,
   PackageSearchResponse
-} from "../contracts/package_pb";
+} from "dreams-proto-sharing/src/contracts/package/package_pb";
 
 
 class PackagesServer implements IPackagesServer {

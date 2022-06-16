@@ -1,4 +1,4 @@
-import { Flight, Hotel, PackageCreate, PackageCreatedResponse, PackageCreateRequest } from "../../protos/contracts/package_pb";
+import { Flight, Hotel, PackageCreate, PackageCreatedResponse, PackageCreateRequest } from "dreams-proto-sharing/src/contracts/package/package_pb";
 import packageClient from "../../providers/PackageService";
 
 interface IPackageCreateRequestDTO {

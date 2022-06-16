@@ -1,4 +1,4 @@
-import { PackagesService } from "./protos/contracts/package_grpc_pb";
+import { PackagesService } from "dreams-proto-sharing/src/contracts/package/package_grpc_pb";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import PackageServer from "./protos/implementations/PackageServiceProto";

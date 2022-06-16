@@ -1,6 +1,6 @@
 import Package from "../../dtos/IPackage";
 import { IPackageRequest } from "../../dtos/IPackageRequest";
-import { PackageSearch, PackageSearchRequest, PackageSearchResponse } from "../../protos/contracts/package_pb";
+import { PackageSearch, PackageSearchRequest, PackageSearchResponse } from "dreams-proto-sharing/src/contracts/package/package_pb";
 import packageClient from "../../providers/PackageService";
 
 

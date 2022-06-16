@@ -1,11 +1,11 @@
 import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "dreams-proto-sharing/src/contracts/flight/flight_pb";
 import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
+import { FlightOffer } from "../../@types/amadeus/flights/FlightOfferSearchResponse";
+import { HotelOffer } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
 import Package from "../../dtos/IPackage";
 import { IPackageRequest } from "../../dtos/IPackageRequest";
-import hotelClient from "../../providers/HotelService";
 import flightClient from "../../providers/FlightService";
-import { HotelOffer, HotelOfferSearchResponse } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import { FlightOffer, FlightOfferSearchResponse } from "../../@types/amadeus/flights/FlightOfferSearchResponse";
+import hotelClient from "../../providers/HotelService";
 
 interface IFlightOffersSearch {
   originLocationCode: string;
