@@ -13,12 +13,13 @@ interface IFlightsRepository {
 }
 
 export class FlightsRepository implements IFlightsRepository {
-  async create({ userId, itineraries, price }: ICreateFlightDTO): Promise<Flight> {
+  async create({ userId, itineraries, price, isPackage }: ICreateFlightDTO): Promise<Flight> {
     const flight = await prisma.flight.create({
       data: {
         userId,
         itineraries: JSON.parse(itineraries) as Prisma.JsonArray,
         price: JSON.parse(price) as Prisma.JsonObject,
+        isPackage
       }
     })
     return flight
@@ -35,7 +36,12 @@ export class FlightsRepository implements IFlightsRepository {
   }
 
   async findByUserId(userId: string): Promise<Flight[]> {
-    const flights = await prisma.flight.findMany({ where: { userId } })
+    const flights = await prisma.flight.findMany({ 
+      where: { 
+        userId,
+        isPackage: false
+      } 
+    })
 
     return flights
   }

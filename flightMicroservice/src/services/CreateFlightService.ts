@@ -4,6 +4,7 @@ type FlightRequest = {
   itineraries: string;
   price: string;
   userId: string;
+  isPackage: boolean;
 }
 
 type FlightResponse = {
@@ -21,11 +22,12 @@ export default class CreateFlightService {
     this.flightsRepository = new FlightsRepository()
   }
 
-  async execute({ itineraries, price, userId }: FlightRequest): Promise<FlightResponse> {
+  async execute({ itineraries, price, userId, isPackage }: FlightRequest): Promise<FlightResponse> {
     const flight = await this.flightsRepository.create({
       itineraries,
       price,
-      userId
+      userId,
+      isPackage
     });
 
     return {

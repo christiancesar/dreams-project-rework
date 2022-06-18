@@ -49,7 +49,8 @@ class HotelServer implements IHotelsServer {
       const hotel = await createHotelService.execute({
         hotel: hotelRequest.hotel,
         offers: hotelRequest.offers,
-        userId: hotelRequest.userid
+        userId: hotelRequest.userid,
+        isPackage: hotelRequest.ispackage
       })
 
       hotelResponse.setHotel(

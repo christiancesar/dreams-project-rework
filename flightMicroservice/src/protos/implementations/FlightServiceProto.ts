@@ -53,9 +53,10 @@ class FlightServer implements IFlightsServer {
       const createFlightService = new CreateFlightService();
 
       const flight = await createFlightService.execute({
-        itineraries: flightRequest?.itineraries,
+        itineraries: flightRequest.itineraries,
         price: flightRequest.price,
-        userId: flightRequest.userid
+        userId: flightRequest.userid,
+        isPackage: flightRequest.ispackage        
       })
 
       flightResponse.setFlight(

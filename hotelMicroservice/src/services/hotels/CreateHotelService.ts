@@ -4,6 +4,7 @@ type HotelRequest = {
   userId: string;
   hotel: string;
   offers: string;
+  isPackage: boolean;
 }
 
 type HotelResponse = {
@@ -22,11 +23,12 @@ export default class CreateHotelService {
     this.hotelsRepository = new HotelsRepository()
   }
 
-  async execute({ hotel, offers, userId }: HotelRequest): Promise<HotelResponse> {
+  async execute({ hotel, offers, userId, isPackage}: HotelRequest): Promise<HotelResponse> {
     const hotelCreated = await this.hotelsRepository.create({
       userId,
       hotel,
       offers,
+      isPackage
     });
 
     return {

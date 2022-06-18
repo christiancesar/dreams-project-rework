@@ -62,6 +62,7 @@ class CreatePackageService {
             .setItineraries(flight.itineraries)
             .setPrice(flight.price)
             .setUserid(userId)
+            .setIspackage(true)
         ),
         (err, flight) => {
           if (err) {
@@ -87,6 +88,7 @@ class CreatePackageService {
             .setUserid(hotel.userId)
             .setHotel(hotel.hotel)
             .setOffers(hotel.offers)
+            .setIspackage(true)
         ),
         (err, hotel) => {
           if (err) {
