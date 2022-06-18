@@ -26,13 +26,15 @@ class FlightServer implements IFlightsServer {
       const listFlightsByUserService = new ListFlightsByUserService();
 
       const flights = await listFlightsByUserService.execute({ userId });
-     
+
       if (flights) {
         flights.map((flight) => {
           flightListResponse.addFlight(
             new Flight().setId(flight.id)
-              .setItineraries(JSON.stringify(flight.itineraries))
-              .setPrice(JSON.stringify(flight.price))
+              .setItineraries(flight.itineraries)
+              .setPrice(flight.price)
+              .setCreatedat(flight.createdAt)
+              .setUpdateat(flight.updatedAt)
           );
         })
       }
@@ -80,8 +82,10 @@ class FlightServer implements IFlightsServer {
       flights.map((flight) => {
         flightListResponse.addFlight(
           new Flight().setId(flight.id)
-            .setItineraries(JSON.stringify(flight.itineraries))
-            .setPrice(JSON.stringify(flight.price))
+            .setItineraries(flight.itineraries)
+            .setPrice(flight.price)
+            .setCreatedat(flight.createdAt)
+            .setUpdateat(flight.updatedAt)
         );
       })
 
@@ -97,12 +101,15 @@ class FlightServer implements IFlightsServer {
       const flightShowRequest = call.request;
       const flightResponse = new FlightResponse();
       const showFlightService = new ShowFlightService();
+
       const flight = await showFlightService.execute({ flightId: flightShowRequest.getId() });
 
       flightResponse.setFlight(
         new Flight().setId(flight.id)
-          .setItineraries(JSON.stringify(flight.itineraries))
-          .setPrice(JSON.stringify(flight.price))
+          .setItineraries(flight.itineraries)
+          .setPrice(flight.price)
+          .setCreatedat(flight.createdAt)
+          .setUpdateat(flight.updatedAt)
       )
 
       callback(null, flightResponse);
@@ -117,7 +124,7 @@ class FlightServer implements IFlightsServer {
       const flightOffersResponse = new FlightOffersResponse();
       const flightOfferSearchService = new FlightOfferSearchService();
 
-      const response = await flightOfferSearchService.execute({
+      const { flightOffers } = await flightOfferSearchService.execute({
         adults: flightOffersRequest.adults,
         departureDate: flightOffersRequest.departuredate,
         destinationLocationCode: flightOffersRequest.destinationlocationcode,
@@ -128,7 +135,7 @@ class FlightServer implements IFlightsServer {
         returnDate: flightOffersRequest.returndate
       })
 
-      flightOffersResponse.setFlightoffers(JSON.stringify(response))
+      flightOffersResponse.setFlightoffers(flightOffers)
 
       callback(null, flightOffersResponse);
     } catch (error) {

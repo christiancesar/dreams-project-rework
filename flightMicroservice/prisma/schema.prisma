@@ -12,7 +12,7 @@ model Flight {
   itineraries Json
   price       Json
   userId      String
-  isPackage   Boolean? @default(false)
+  isPackage   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

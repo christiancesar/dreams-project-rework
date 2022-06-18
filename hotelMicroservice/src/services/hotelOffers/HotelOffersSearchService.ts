@@ -1,7 +1,18 @@
 import { HotelOfferSearchRequest } from "../../@types/amadeus/hotels/HotelOfferSearchRequest";
 import { HotelOffer, HotelOfferSearchResponse } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
 import { amadeus } from "../../providers/amadeus/amadeusApi";
-import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
+
+type HotelOffersSearchRequest = {
+  cityCode: string;
+  checkInDate: string;
+  checkOutDate: string;
+  roomQuantity: number;
+  adults: number;
+}
+
+type HotelOffersSearchResponse = {
+  hotelOffers: string
+}
 
 export default class HotelOfferSearchService {
   async execute({
@@ -10,7 +21,7 @@ export default class HotelOfferSearchService {
     checkOutDate,
     cityCode,
     roomQuantity
-  }: IHotelOffersSearch): Promise<HotelOffer[]> {
+  }: HotelOffersSearchRequest): Promise<HotelOffersSearchResponse> {
     const hotelOffersSearch = await amadeus.shopping.hotelOffers.get({
       cityCode,
       checkInDate,
@@ -28,6 +39,8 @@ export default class HotelOfferSearchService {
       // "page%5Blimit%5D": 1
     } as HotelOfferSearchRequest) as HotelOfferSearchResponse;
 
-    return hotelOffersSearch.data
+    return {
+      hotelOffers: JSON.stringify(hotelOffersSearch.data)
+    }
   }
 }

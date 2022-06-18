@@ -29,8 +29,8 @@ class HotelServer implements IHotelsServer {
       hotels.map((hotel) => {
         hotelListResponse.addHotel(
           new Hotel().setId(hotel.id)
-            .setHotel(JSON.stringify(hotel.hotel))
-            .setOffers(JSON.stringify(hotel.offers))
+            .setHotel(hotel.hotel)
+            .setOffers(hotel.offers)
         );
       })
 
@@ -76,8 +76,8 @@ class HotelServer implements IHotelsServer {
       hotels.map((hotel) => {
         hotelListResponse.addHotel(
           new Hotel().setId(hotel.id)
-            .setHotel(JSON.stringify(hotel.hotel))
-            .setOffers(JSON.stringify(hotel.offers))
+            .setHotel(hotel.hotel)
+            .setOffers(hotel.offers)
         );
       })
 
@@ -97,8 +97,8 @@ class HotelServer implements IHotelsServer {
 
       hotelResponse.setHotel(
         new Hotel().setId(hotel.id)
-          .setHotel(JSON.stringify(hotel.hotel))
-          .setOffers(JSON.stringify(hotel.offers))
+          .setHotel(hotel.hotel)
+          .setOffers(hotel.offers)
       )
 
       callback(null, hotelResponse);
@@ -113,7 +113,7 @@ class HotelServer implements IHotelsServer {
       const hotelOffersResponse = new HotelOffersResponse();
       const hotelOfferSearchService = new HotelOfferSearchService();
 
-      const response = await hotelOfferSearchService.execute({
+      const { hotelOffers } = await hotelOfferSearchService.execute({
         adults: hotelOffersRequest.adults,
         checkInDate: hotelOffersRequest.checkindate,
         checkOutDate: hotelOffersRequest.checkoutdate,
@@ -121,7 +121,7 @@ class HotelServer implements IHotelsServer {
         roomQuantity: hotelOffersRequest.roomquantity,
       })
 
-      hotelOffersResponse.setHoteloffers(JSON.stringify(response))
+      hotelOffersResponse.setHoteloffers(hotelOffers)
 
       callback(null, hotelOffersResponse);
     } catch (error) {

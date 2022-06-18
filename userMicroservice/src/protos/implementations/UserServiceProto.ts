@@ -1,6 +1,5 @@
 
 import grpc, { sendUnaryData, ServerErrorResponse, ServerUnaryCall } from "@grpc/grpc-js";
-import { User } from "@prisma/client";
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb.js';
 import { IUsersServer } from "dreams-proto-sharing/src/contracts/user/user_grpc_pb";
 import { User as UserProto, UserResponse, UserRequest } from "dreams-proto-sharing/src/contracts/user/user_pb";
@@ -68,11 +67,11 @@ class UsersServer implements IUsersServer {
       const createUserService = new CreateUserService();
 
       const newUser = await createUserService.execute({
-        firstName: user?.firstname,
-        lastName: user?.lastname,
-        age: user?.age,
-        birthday: user?.birthday,
-        email: user?.email
+        firstName: user!.firstname,
+        lastName: user!.lastname,
+        age: user!.age,
+        birthday: user!.birthday,
+        email: user!.email
       })
 
       response.addUser(
@@ -99,7 +98,7 @@ class UsersServer implements IUsersServer {
 
       const users = await listUsersService.execute()
 
-      users.forEach((user: User) => {
+      users.forEach((user) => {
         response.addUser(
           (new UserProto).setId(user.id)
             .setFirstname(user.firstName)

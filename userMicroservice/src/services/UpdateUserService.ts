@@ -1,7 +1,7 @@
 import { User } from ".prisma/client";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 
-interface IRequest { 
+type UserRequest = { 
   id: string,
   firstName: string,
   lastName: string,
@@ -9,6 +9,18 @@ interface IRequest {
   age: number,
   email: string 
 }
+
+type UserResponse = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  birthday: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export class UpdateUserService {
   private userRepository: UsersRepository;
 
@@ -23,7 +35,7 @@ export class UpdateUserService {
     birthday, 
     age, 
     email 
-  }: IRequest): Promise<User> 
+  }: UserRequest): Promise<UserResponse> 
   {
 
     const userAlreadyExist = await this.userRepository.findByUserId(id)

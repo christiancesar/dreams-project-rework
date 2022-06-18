@@ -1,7 +1,14 @@
 import { HotelOffer, HotelOfferSearchResponse } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
+import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch as HotelOffersSearchObject } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
-import IHotelOffersSearch from "../../dtos/IHotelOffersSearch";
+
+type HotelOffersSearch = {
+  cityCode: string;
+  checkInDate: string;
+  checkOutDate: string;
+  roomQuantity: number;
+  adults: number;
+}
 
 export default class HotelOfferSearchService {
   async execute({
@@ -10,12 +17,12 @@ export default class HotelOfferSearchService {
     checkOutDate,
     cityCode,
     roomQuantity
-  }: IHotelOffersSearch): Promise<HotelOffer[]> {
+  }: HotelOffersSearch): Promise<HotelOffer[]> {
 
-    const hotelServiceRequest = (search: IHotelOffersSearch) => new Promise<HotelOffersResponse>((resolve, reject) => {
+    const hotelServiceRequest = (search: HotelOffersSearch) => new Promise<HotelOffersResponse>((resolve, reject) => {
       hotelClient.searchHotelOffer(
         new HotelOffersRequest().setHotelofferssearch(
-          new HotelOffersSearch()
+          new HotelOffersSearchObject()
             .setAdults(adults)
             .setCheckindate(checkInDate)
             .setCheckoutdate(checkOutDate)

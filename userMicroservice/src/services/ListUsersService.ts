@@ -1,5 +1,15 @@
-import { User } from ".prisma/client";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
+
+type UserResponse = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  birthday: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export class ListUsersService {
   private userRepository: UsersRepository;
@@ -8,7 +18,7 @@ export class ListUsersService {
     this.userRepository = new UsersRepository()
   }
 
-  async execute(): Promise<User[]> {
+  async execute(): Promise<UserResponse[]> {
     const users = await this.userRepository.findAll()
 
     return users

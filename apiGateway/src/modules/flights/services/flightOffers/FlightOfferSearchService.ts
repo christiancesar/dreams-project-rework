@@ -6,7 +6,7 @@ import {
   FlightOffersSearch 
 } from "dreams-proto-sharing/src/contracts/flight/flight_pb";
 
-interface IRequest {
+type FlightRequest = {
   originLocationCode: string;
   destinationLocationCode: string;
   departureDate: string;
@@ -28,8 +28,9 @@ export default class FlightOfferSearchService {
     children,
     infants,
     returnDate
-  }: IRequest): Promise<FlightOffer[]> {
-    const flightServiceRequest = (search: IRequest) => new Promise<FlightOffersResponse>((resolve, reject) => {
+  }: FlightRequest): Promise<FlightOffer[]> {
+    
+    const flightServiceRequest = (search: FlightRequest) => new Promise<FlightOffersResponse>((resolve, reject) => {
       flightClient.searchFlightOffer(
         new FlightOffersRequest().setFlightofferssearch(
           new FlightOffersSearch()

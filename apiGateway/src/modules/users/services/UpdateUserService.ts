@@ -1,9 +1,8 @@
 import { ServiceError } from "@grpc/grpc-js";
-import AppError from "../../../errors/AppError";
 import { User, UserRequest, UserResponse } from "dreams-proto-sharing/src/contracts/user/user_pb";
-import userClient from "../providers/UserService";
-import { ICreateUser } from "../dtos/ICreateUserDTO";
+import AppError from "../../../errors/AppError";
 import { IUserDTO } from "../dtos/IUserDTO";
+import userClient from "../providers/UserService";
 
 export class UpdateUserService {
 
@@ -37,11 +36,6 @@ export class UpdateUserService {
       )
     })
 
-    try {
-      
-    } catch (error) {
-      
-    }
     await userServiceRequest({
       id,
       firstname,

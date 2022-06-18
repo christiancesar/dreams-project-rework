@@ -1,14 +1,24 @@
-import { User } from ".prisma/client";
+import { status } from '@grpc/grpc-js/';
 import AppError from "../../../common/errors/AppError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
-import { status } from '@grpc/grpc-js/';
 
-interface IRequest {
+type UserRequest = {
   firstName: string,
   lastName: string,
   birthday: string,
   age: number,
   email: string
+}
+
+type UserResponse = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  birthday: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class CreateUserService {
@@ -24,7 +34,7 @@ export class CreateUserService {
     birthday,
     age,
     email
-  }: IRequest): Promise<User> {
+  }: UserRequest): Promise<UserResponse> {
 
     //example error
     // throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'Invalid email address!'});

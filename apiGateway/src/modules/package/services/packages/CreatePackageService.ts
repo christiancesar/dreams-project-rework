@@ -1,7 +1,7 @@
 import { Flight, Hotel, PackageCreate, PackageCreatedResponse, PackageCreateRequest } from "dreams-proto-sharing/src/contracts/package/package_pb";
 import packageClient from "../../providers/PackageService";
 
-interface IPackageCreateRequestDTO {
+type PackageCreateRequestDTO = {
   userId: string;
   hotel: {
     hotel: string;
@@ -15,7 +15,7 @@ interface IPackageCreateRequestDTO {
   off: number;
 }
 
-interface IPackageRequest {
+type PackageRequest = {
   userId: string;
   hotel: {
     hotel: any;
@@ -29,7 +29,7 @@ interface IPackageRequest {
   off: number;
 }
 
-interface IPackageResponse {
+type PackageResponse = {
   id: string;
   hotel: {
     hotel: any;
@@ -46,10 +46,10 @@ interface IPackageResponse {
 }
 
 class CreatePackageService {
-  async execute({ userId, flight, hotel, amount, off }: IPackageRequest): Promise<IPackageResponse> {
+  async execute({ userId, flight, hotel, amount, off }: PackageRequest): Promise<PackageResponse> {
 
 
-    const packageCreateRequest = (packageCreate: IPackageCreateRequestDTO) => new Promise<PackageCreatedResponse>((resolve, reject) => {
+    const packageCreateRequest = (packageCreate: PackageCreateRequestDTO) => new Promise<PackageCreatedResponse>((resolve, reject) => {
       packageClient.createPackage(
         new PackageCreateRequest().setPackagecreate(
           new PackageCreate()

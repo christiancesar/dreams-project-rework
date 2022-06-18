@@ -1,15 +1,17 @@
 import HotelsRepository from "../../repositories/implementations/HotelsRepository";
 
-interface IRequest {
+type HotelRequest = {
   userId: string;
   hotel: string;
   offers: string;
 }
 
-interface IResponse {
+type HotelResponse = {
   id: string;
   hotel: string;
   offers: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export default class CreateHotelService {
@@ -20,7 +22,7 @@ export default class CreateHotelService {
     this.hotelsRepository = new HotelsRepository()
   }
 
-  async execute({ hotel, offers, userId }: IRequest): Promise<IResponse> {
+  async execute({ hotel, offers, userId }: HotelRequest): Promise<HotelResponse> {
     const hotelCreated = await this.hotelsRepository.create({
       userId,
       hotel,
@@ -30,7 +32,9 @@ export default class CreateHotelService {
     return {
       id: hotelCreated.id,
       hotel: JSON.stringify(hotelCreated.hotel),
-      offers: JSON.stringify(hotelCreated.offers)
+      offers: JSON.stringify(hotelCreated.offers),
+      createdAt: Date.parse(hotelCreated.createdAt.toDateString()),
+      updatedAt: Date.parse(hotelCreated.updatedAt.toDateString()),
     };
   }
 } 

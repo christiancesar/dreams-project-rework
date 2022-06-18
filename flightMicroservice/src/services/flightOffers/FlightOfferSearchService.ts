@@ -1,9 +1,9 @@
 import { FlightOfferSearchRequest } from "../../@types/amadeus/flights/FlightOfferSearchRequest";
-import { FlightOffer, FlightOfferSearchResponse } from "../../@types/amadeus/flights/FlightOfferSearchResponse";
+import { FlightOfferSearchResponse } from "../../@types/amadeus/flights/FlightOfferSearchResponse";
 import { TravelClass } from "../../@types/amadeus/flights/TravelClass";
 import { amadeus } from "../../providers/amadeus/amadeusApi";
 
-interface IRequest {
+type FlightSerachRequest = {
   originLocationCode: string;
   destinationLocationCode: string;
   departureDate: string;
@@ -13,6 +13,11 @@ interface IRequest {
   infants?: number;
   travelClass: string;
 }
+
+type FlightSerachResponse = {
+  flightOffers: string;
+}
+
 
 export default class FlightOfferSearchService {
 
@@ -25,7 +30,7 @@ export default class FlightOfferSearchService {
     children,
     infants,
     returnDate
-  }: IRequest): Promise<FlightOffer[]> {
+  }: FlightSerachRequest): Promise<FlightSerachResponse> {
     const findTravelClass = TravelClass["ECONOMY"]
     const flightOffersResponse = await amadeus.shopping.flightOffersSearch.get({
       originLocationCode,
@@ -39,8 +44,10 @@ export default class FlightOfferSearchService {
       currencyCode: 'BRL',
       max: 10
     } as FlightOfferSearchRequest) as FlightOfferSearchResponse
-    
-    return flightOffersResponse.data
+
+    return {
+      flightOffers: JSON.stringify(flightOffersResponse.data)
+    }
 
   }
 }

@@ -1,19 +1,25 @@
 import { Hotel } from "@prisma/client";
-import { HotelResponse, HotelShowRequest } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
+import { HotelResponse as HotelShowResponse, HotelShowRequest } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
 
-interface IRequest {
+type HotelRequest = {
   hotelId: string
 }
 
-
+type HotelResponse = {
+  id: string;
+  hotel: any;
+  offers: any;
+  updateAt: Date;
+  createAt: Date;
+}
 export default class ShowHotelService {
 
-  async execute({ hotelId }: IRequest): Promise<Hotel> {
+  async execute({ hotelId }: HotelRequest): Promise<HotelResponse> {
 
-    const showHotelServiceRequest = (hotel: IRequest) => new Promise<HotelResponse>((resolve, reject) => {
+    const showHotelServiceRequest = (hotel: HotelRequest) => new Promise<HotelShowResponse>((resolve, reject) => {
       hotelClient.showHotel(
-        new HotelShowRequest().setId(hotelId),
+        new HotelShowRequest().setId(hotel.hotelId),
         (err, hotel) => {
           if (err) {
             reject(err)
@@ -23,12 +29,16 @@ export default class ShowHotelService {
       );
     });
 
-    const hotelResponse = await showHotelServiceRequest({ hotelId });
+    const showHotelResponse = await showHotelServiceRequest({ hotelId });
+
+    const hotelResponse = showHotelResponse.getHotel()!.toObject();
 
     return {
-      id: hotelResponse.getHotel()!.getId(),
-      hotel: JSON.parse(hotelResponse.getHotel()!.getHotel()),
-      offers: JSON.parse(hotelResponse.getHotel()!.getOffers())
+      id: hotelResponse.id,
+      hotel: JSON.parse(hotelResponse.hotel),
+      offers: JSON.parse(hotelResponse.offers),
+      createAt: new Date(hotelResponse.createdat),
+      updateAt: new Date(hotelResponse.updateat)
     };
   }
 }
