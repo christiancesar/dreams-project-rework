@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import CreatePackageService from "../services/packages/CreatePackageService"
+import ListPackagesService from "../services/packages/ListPackagesService";
 
 class PackageControllers {
 
@@ -17,6 +18,12 @@ class PackageControllers {
     })
 
     return response.json(packageCreated)
+  }
+
+  async index(request: Request, response: Response): Promise<Response> {
+    const listPackagesService = new ListPackagesService();
+    const packages = await listPackagesService.execute();
+    return response.json(packages)
   }
 
 }

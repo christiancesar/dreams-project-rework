@@ -2,12 +2,22 @@ import { FlightOffersRequest, FlightOffersResponse, FlightOffersSearch } from "d
 import { HotelOffersRequest, HotelOffersResponse, HotelOffersSearch } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import { FlightOffer } from "../../@types/amadeus/flights/FlightOfferSearchResponse";
 import { HotelOffer } from "../../@types/amadeus/hotels/HotelOfferSearchResponse";
-import Package from "../../dtos/IPackage";
-import { IPackageRequest } from "../../dtos/IPackageRequest";
 import flightClient from "../../providers/FlightService";
 import hotelClient from "../../providers/HotelService";
 
-interface IFlightOffersSearch {
+type PackageOffersRequest = {
+  originLocationCode: string;
+  destinationLocationCode: string;
+  departureDate: string;
+  returnDate: string;
+  adults: number;
+  children: number;
+  infants: number;
+  travelClass: string;
+  roomQuantity: number;
+}
+
+type FlightOffersSearchRequest = {
   originLocationCode: string;
   destinationLocationCode: string;
   departureDate: string;
@@ -18,12 +28,19 @@ interface IFlightOffersSearch {
   travelClass: string;
 }
 
-interface IHotelOffersSearch {
+type HotelOffersSearchRequest = {
   cityCode: string;
   checkInDate: string;
   checkOutDate: string;
   roomQuantity: number;
   adults: number;
+}
+
+type PackageResponse = {
+  flight: FlightOffer;
+  hotel: HotelOffer;  
+  off: number;  
+  amount: number;
 }
 
 export default class AssemblingPackageService {
@@ -38,7 +55,7 @@ export default class AssemblingPackageService {
     returnDate,
     travelClass,
     roomQuantity
-  }: IPackageRequest): Promise<Package[]> {
+  }: PackageOffersRequest): Promise<PackageResponse[]> {
     // if (!isMatch(departureDate, 'yyyy-MM-dd')) {
     //   throw new AppError("Formart departure date not match, example format yyyy-MM-dd.");
     // }
@@ -60,7 +77,7 @@ export default class AssemblingPackageService {
       children,
       infants,
       returnDate
-    }: IFlightOffersSearch) => new Promise<FlightOffersResponse>((resolve, reject) => {
+    }: FlightOffersSearchRequest) => new Promise<FlightOffersResponse>((resolve, reject) => {
       flightClient.searchFlightOffer(
         new FlightOffersRequest().setFlightofferssearch(
           new FlightOffersSearch()
@@ -81,7 +98,7 @@ export default class AssemblingPackageService {
       );
     });
 
-    const hotelServiceRequest = ({ adults, checkInDate, checkOutDate, cityCode, roomQuantity }: IHotelOffersSearch) => new Promise<HotelOffersResponse>((resolve, reject) => {
+    const hotelServiceRequest = ({ adults, checkInDate, checkOutDate, cityCode, roomQuantity }: HotelOffersSearchRequest) => new Promise<HotelOffersResponse>((resolve, reject) => {
       hotelClient.searchHotelOffer(
         new HotelOffersRequest().setHotelofferssearch(
           new HotelOffersSearch()
@@ -122,16 +139,16 @@ export default class AssemblingPackageService {
     
     const flights = JSON.parse(flightOffersResponse.getFlightoffers()) as FlightOffer[];
 
-    let packages = [] as Package[];
+    let packages = [] as PackageResponse[];
 
     if (hotels.length < flights.length) {
       for (let index = 0; index < hotels.length; index++) {
         packages.push({
           flight: flights[index],
           hotel: hotels[index],
-          total: Number(hotels[index].offers[0].price.total) + Number(flights[index].price.total),
+          amount: Number(hotels[index].offers[0].price.total) + Number(flights[index].price.total),
           off: Math.floor(Math.random() * (50 - 0)) + 0,
-        } as Package)
+        } as PackageResponse)
 
       }
     } else {
@@ -139,7 +156,7 @@ export default class AssemblingPackageService {
         packages.push({
           flight: flights[index],
           hotel: hotels[index],
-          total: Number(hotels[index].offers[0].price.total) + Number(flights[index].price.total),
+          amount: Number(hotels[index].offers[0].price.total) + Number(flights[index].price.total),
           off: Math.floor(Math.random() * (50 - 0)) + 0,
         })
 

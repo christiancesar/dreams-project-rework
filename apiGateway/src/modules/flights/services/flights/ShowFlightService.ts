@@ -23,7 +23,7 @@ export default class CreateFlightService {
     
     const showFlightServiceRequest = (flight: FlightRequest) => new Promise<FlightShowResponse>((resolve, reject) => {
       flightClient.showFlight(
-        new FlightShowRequest().setId(flightId),
+        new FlightShowRequest().setId(flight.flightId),
         (err, flight) => {
           if (err) {
             reject(err)

@@ -4,19 +4,19 @@ import flightClient from "../../providers/FlightService";
 import hotelClient from "../../providers/HotelService";
 import PackageRepository from "../../repositories/implementations/PackageRepository";
 
-interface ICreateFlightDTO {
+type CreateFlightDTO = {
   userId: string;
   itineraries: string;
   price: string;
 }
 
-interface ICreateHotelDTO {
+type CreateHotelDTO = {
   userId: string;
   hotel: string;
   offers: string;
 }
 
-interface IPackageCreateRequestDTO {
+type PackageCreateRequestDTO = {
   userId: string;
   hotel: {
     hotel: string;
@@ -30,7 +30,7 @@ interface IPackageCreateRequestDTO {
   off: number;
 }
 
-interface IPackageCreateResponseDTO {
+type PackageCreateResponseDTO = {
   id: string
   hotel: {
     hotel: string;
@@ -53,9 +53,9 @@ class CreatePackageService {
     this.packageRepository = new PackageRepository();
   }
 
-  async execute({ userId, hotel, flight, amount, off }: IPackageCreateRequestDTO): Promise<IPackageCreateResponseDTO> {
+  async execute({ userId, hotel, flight, amount, off }: PackageCreateRequestDTO): Promise<PackageCreateResponseDTO> {
 
-    const createFlightServiceRequest = (flight: ICreateFlightDTO) => new Promise<FlightResponse>((resolve, reject) => {
+    const createFlightServiceRequest = (flight: CreateFlightDTO) => new Promise<FlightResponse>((resolve, reject) => {
       flightClient.createFlight(
         new FlightCreateRequest().setFlightcreate(
           new FlightCreate()
@@ -81,7 +81,7 @@ class CreatePackageService {
 
     const flightResponse = createFlightResponse.getFlight()!.toObject();
 
-    const createHotelServiceRequest = (hotel: ICreateHotelDTO) => new Promise<HotelResponse>((resolve, reject) => {
+    const createHotelServiceRequest = (hotel: CreateHotelDTO) => new Promise<HotelResponse>((resolve, reject) => {
       hotelClient.createHotel(
         new HotelCreateRequest().setHotelcreate(
           new HotelCreate()
@@ -107,7 +107,7 @@ class CreatePackageService {
 
     const hotelResponse = createHotelResponse.getHotel()!.toObject();
 
-    const packageCreated = await this.packageRepository.create({
+    const package_ = await this.packageRepository.create({
       userId,
       flightId: flightResponse.id,
       hotelId: hotelResponse.id,
@@ -116,7 +116,7 @@ class CreatePackageService {
     });
 
     return {
-      id: packageCreated.id,
+      id: package_.id,
       hotel: {
         hotel: hotelResponse.hotel,
         offers: hotelResponse.offers,
@@ -125,10 +125,10 @@ class CreatePackageService {
         itineraries: flightResponse.itineraries,
         price: flightResponse.price,
       },
-      amount: packageCreated.amount,
-      off: packageCreated.off,
-      createdAt: Date.parse(packageCreated.createdAt.toDateString()),
-      updatedAt: Date.parse(packageCreated.updatedAt.toDateString()),
+      amount: Number(package_.amount.toFixed(2)),
+      off: package_.off,
+      createdAt: Date.parse(package_.createdAt.toDateString()),
+      updatedAt: Date.parse(package_.updatedAt.toDateString()),
     }
   }
 }

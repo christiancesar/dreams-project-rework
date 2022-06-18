@@ -1,4 +1,3 @@
-import { Hotel } from "@prisma/client";
 import { HotelResponse as HotelShowResponse, HotelShowRequest } from "dreams-proto-sharing/src/contracts/hotel/hotel_pb";
 import hotelClient from "../../providers/HotelService";
 

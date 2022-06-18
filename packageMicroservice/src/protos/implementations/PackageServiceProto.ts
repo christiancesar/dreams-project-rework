@@ -6,22 +6,93 @@ import { IPackagesServer } from "dreams-proto-sharing/src/contracts/package/pack
 import {
   Flight,
   Hotel,
-  PackageCreated,
-  PackageCreatedResponse,
+  PackageResponse,
+  PackagesResponse,
   PackageCreateRequest,
   PackageSearchRequest,
-  PackageSearchResponse
+  PackageSearchResponse,
+  PackagesByUserRequest
 } from "dreams-proto-sharing/src/contracts/package/package_pb";
+import { Empty } from "google-protobuf/google/protobuf/empty_pb";
+import ListPackagesByUserService from "../../services/packageUser/ListPackagesByUserService";
+import ListPackagesService from "../../services/package/ListPackagesService";
 
 
 class PackagesServer implements IPackagesServer {
-  createPackage: grpc.handleUnaryCall<PackageCreateRequest, PackageCreatedResponse> = async (call, callback): Promise<void> => {
+  listPackages: grpc.handleUnaryCall<Empty, PackagesResponse> = async (call, callback): Promise<void> => {
+    try {
+      const packageResponse = new PackagesResponse();
+      const listPackagesService = new ListPackagesService();
+      
+      const packages = await listPackagesService.execute();
+
+      packages.map((package_) => {
+        packageResponse.addPackageresponse(
+          new PackageResponse()
+            .setId(package_.id)
+            .setFlight(
+              new Flight()
+                .setIntinerantes(package_.flight.itineraries)
+                .setPrice(package_.flight.price)
+            )
+            .setHotel(
+              new Hotel()
+                .setHotel(package_.hotel.hotel)
+                .setOffers(package_.hotel.offers)
+            )
+            .setAmount(package_.amount)
+            .setOff(package_.off)
+            .setUpdatedat(package_.updatedAt)
+            .setCreatedat(package_.createdAt)
+        )
+      })
+      callback(null, packageResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
+  }
+
+  listPackageByUser: grpc.handleUnaryCall<PackagesByUserRequest, PackagesResponse> = async (call, callback): Promise<void> => {
+    try {
+      const userId = call.request.getUserid();
+      const packageResponse = new PackagesResponse();
+      const listPackagesByUser = new ListPackagesByUserService();
+
+      const packages = await listPackagesByUser.execute({ userId });
+
+      packages.map((package_) => {
+        packageResponse.addPackageresponse(
+          new PackageResponse()
+            .setId(package_.id)
+            .setFlight(
+              new Flight()
+                .setIntinerantes(package_.flight.itineraries)
+                .setPrice(package_.flight.price)
+            )
+            .setHotel(
+              new Hotel()
+                .setHotel(package_.hotel.hotel)
+                .setOffers(package_.hotel.offers)
+            )
+            .setAmount(package_.amount)
+            .setOff(package_.off)
+            .setUpdatedat(package_.updatedAt)
+            .setCreatedat(package_.createdAt)
+        )
+      })
+      callback(null, packageResponse);
+    } catch (error) {
+      callback(error as ServerErrorResponse, null);
+    }
+  }
+
+  createPackage: grpc.handleUnaryCall<PackageCreateRequest, PackagesResponse> = async (call, callback): Promise<void> => {
     try {
       const packageRequest = call.request.getPackagecreate()!.toObject();
-      const packageResponse = new PackageCreatedResponse();
+      const packageResponse = new PackagesResponse();
       const createPackageService = new CreatePackageService();
 
-      const packageCreated = await createPackageService.execute({
+      const package_ = await createPackageService.execute({
         userId: packageRequest.userid,
         flight: {
           itineraries: packageRequest.flight!.intinerantes,
@@ -35,23 +106,23 @@ class PackagesServer implements IPackagesServer {
         off: packageRequest.off
       });
 
-      packageResponse.setPackageresponse(
-        new PackageCreated()
-          .setId(packageCreated.id)
+      packageResponse.addPackageresponse(
+        new PackageResponse()
+          .setId(package_.id)
           .setFlight(
             new Flight()
-              .setIntinerantes(packageCreated.flight.itineraries)
-              .setPrice(packageCreated.flight.price)
+              .setIntinerantes(package_.flight.itineraries)
+              .setPrice(package_.flight.price)
           )
           .setHotel(
             new Hotel()
-              .setHotel(packageCreated.hotel.hotel)
-              .setOffers(packageCreated.hotel.offers)
+              .setHotel(package_.hotel.hotel)
+              .setOffers(package_.hotel.offers)
           )
-          .setAmount(packageCreated.amount)
-          .setOff(packageCreated.off)
-          .setUpdatedat(packageCreated.updatedAt)
-          .setCreatedat(packageCreated.createdAt)
+          .setAmount(package_.amount)
+          .setOff(package_.off)
+          .setUpdatedat(package_.updatedAt)
+          .setCreatedat(package_.createdAt)
       );
 
       callback(null, packageResponse);

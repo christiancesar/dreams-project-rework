@@ -1,9 +1,9 @@
 import { Router } from "express";
-import PackageOffersControllers from "../controllers/PackageOffersControllers";
+import PackageOffersController from "../controllers/PackageOffersController";
 
 const packageOffersRouter = Router();
-const packageOffersControllers = new PackageOffersControllers();
+const packageOffersController = new PackageOffersController();
 
-packageOffersRouter.use('/', packageOffersControllers.index)
+packageOffersRouter.use('/', packageOffersController.index)
 
 export default packageOffersRouter;

@@ -1,4 +1,4 @@
-import { Flight, Hotel, PackageCreate, PackageCreatedResponse, PackageCreateRequest } from "dreams-proto-sharing/src/contracts/package/package_pb";
+import { Flight, Hotel, PackageCreate, PackagesResponse, PackageCreateRequest } from "dreams-proto-sharing/src/contracts/package/package_pb";
 import packageClient from "../../providers/PackageService";
 
 type PackageCreateRequestDTO = {
@@ -46,10 +46,10 @@ type PackageResponse = {
 }
 
 class CreatePackageService {
-  async execute({ userId, flight, hotel, amount, off }: PackageRequest): Promise<PackageResponse> {
+  async execute({ userId, flight, hotel, amount, off }: PackageRequest): Promise<PackageResponse[]> {
 
 
-    const packageCreateRequest = (packageCreate: PackageCreateRequestDTO) => new Promise<PackageCreatedResponse>((resolve, reject) => {
+    const packageCreateRequest = (packageCreate: PackageCreateRequestDTO) => new Promise<PackagesResponse>((resolve, reject) => {
       packageClient.createPackage(
         new PackageCreateRequest().setPackagecreate(
           new PackageCreate()
@@ -89,23 +89,31 @@ class CreatePackageService {
       off
     })
 
-    const packageResponse = packageCreatedResponse.getPackageresponse()!.toObject();
+    const packagesResponseList = packageCreatedResponse.getPackageresponseList();
 
-    return {
-      id: packageResponse.id,
-      flight: {
-        itineraries: JSON.parse(packageResponse.flight!.intinerantes),
-        price: JSON.parse(packageResponse.flight!.price)
-      },
-      hotel: {
-        hotel: JSON.parse(packageResponse.hotel!.hotel),
-        offers: JSON.parse(packageResponse.hotel!.offers)
-      },
-      amount: packageResponse.amount,
-      off: packageResponse.off,
-      createdAt: new Date(packageResponse.createdat),
-      updatedAt: new Date(packageResponse.updatedat),
-    }
+    const packages: PackageResponse[] = [];
+
+    packagesResponseList.map((package_) => {
+      const packageObject = package_.toObject();
+     
+      packages.push({
+        id: packageObject.id,
+        flight: {
+          itineraries: JSON.parse(packageObject.flight!.intinerantes),
+          price: JSON.parse(packageObject.flight!.price)
+        },
+        hotel: {
+          hotel: JSON.parse(packageObject.hotel!.hotel),
+          offers: JSON.parse(packageObject.hotel!.offers)
+        },
+        amount: packageObject.amount,
+        off: packageObject.off,
+        createdAt: new Date(packageObject.createdat),
+        updatedAt: new Date(packageObject.updatedat),
+      })
+    })
+
+    return packages;
   }
 }
 
