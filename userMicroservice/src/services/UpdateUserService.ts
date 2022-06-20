@@ -1,42 +1,33 @@
-import { User } from ".prisma/client";
+import { inject, injectable } from "tsyringe";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { User } from "../schemas/User";
 
-type UserRequest = { 
+type UpdateUserParams = {
   id: string,
   firstName: string,
   lastName: string,
   birthday: string,
   age: number,
-  email: string 
+  email: string
 }
 
-type UserResponse = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  birthday: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
+@injectable()
 export class UpdateUserService {
-  private userRepository: UsersRepository;
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: UsersRepository
+  ) { }
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
-  
-  async execute({ 
+
+  async execute({
     id,
-    firstName, 
-    lastName, 
-    birthday, 
-    age, 
-    email 
-  }: UserRequest): Promise<UserResponse> 
-  {
+    firstName,
+    lastName,
+    birthday,
+    age,
+    email
+  }: UpdateUserParams): Promise<User> {
 
     const userAlreadyExist = await this.userRepository.findByUserId(id)
 
@@ -44,15 +35,15 @@ export class UpdateUserService {
       throw new Error("Sorry, but user not exist.");
     }
 
-    const user = this.userRepository.updateUser({ 
+    const user = this.userRepository.updateUser({
       id,
-      firstName, 
-      lastName, 
-      birthday, 
-      age, 
-      email 
+      firstName,
+      lastName,
+      birthday,
+      age,
+      email
     })
-    
+
     return user
   }
 }

@@ -1,9 +1,10 @@
+import "reflect-metadata"
 import { UsersService } from "dreams-proto-sharing/src/contracts/user/user_grpc_pb";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { promisify } from "util";
 import UsersServer from "./protos/implementations/UserServiceProto";
 import { prisma } from '../prisma';
-
+import "./container"
 
 const server = new Server()
 server.addService(UsersService, new UsersServer())

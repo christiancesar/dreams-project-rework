@@ -1,8 +1,10 @@
 import { status } from '@grpc/grpc-js/';
+import { injectable, inject } from 'tsyringe';
 import AppError from "../../../common/errors/AppError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { User } from '../schemas/User';
 
-type UserRequest = {
+type CreateUserParams = {
   firstName: string,
   lastName: string,
   birthday: string,
@@ -10,23 +12,14 @@ type UserRequest = {
   email: string
 }
 
-type UserResponse = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  birthday: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
+@injectable()
 export class CreateUserService {
-  private userRepository: UsersRepository;
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
+
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: UsersRepository
+  ) { }
 
   async execute({
     firstName,
@@ -34,7 +27,7 @@ export class CreateUserService {
     birthday,
     age,
     email
-  }: UserRequest): Promise<UserResponse> {
+  }: CreateUserParams): Promise<User> {
 
     //example error
     // throw new AppError({ code: status.INVALID_ARGUMENT, name: 'Create User', message: 'Invalid email address!'});

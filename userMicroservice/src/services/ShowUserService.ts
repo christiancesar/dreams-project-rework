@@ -1,32 +1,22 @@
-import { User } from ".prisma/client";
-import AppError from "../../../common/errors/AppError";
 import { status } from "@grpc/grpc-js";
+import { inject, injectable } from "tsyringe";
+import AppError from "../../../common/errors/AppError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { User } from "../schemas/User";
 
-type UserRequest = {
+type ShowUserParams = {
   userId: string
 }
 
-type UserResponse = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  birthday: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
-
+@injectable()
 export class ShowUserService {
-  private userRepository: UsersRepository;
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: UsersRepository
+  ) { }
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
-
-  async execute({ userId }: UserRequest): Promise<UserResponse> {
+  async execute({ userId }: ShowUserParams): Promise<User> {
     const user = await this.userRepository.findByUserId(userId)
     
     if (!user) {

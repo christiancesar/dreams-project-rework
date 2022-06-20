@@ -1,24 +1,15 @@
+import { inject, injectable } from "tsyringe";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
+import { User } from "../schemas/User";
 
-type UserResponse = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  birthday: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
+@injectable()
 export class ListUsersService {
-  private userRepository: UsersRepository;
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: UsersRepository
+  ) { }
 
-  constructor() {
-    this.userRepository = new UsersRepository()
-  }
-
-  async execute(): Promise<UserResponse[]> {
+  async execute(): Promise<User[]> {
     const users = await this.userRepository.findAll()
 
     return users

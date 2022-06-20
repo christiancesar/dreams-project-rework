@@ -1,8 +1,10 @@
 
 import grpc, { sendUnaryData, ServerErrorResponse, ServerUnaryCall } from "@grpc/grpc-js";
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb.js';
 import { IUsersServer } from "dreams-proto-sharing/src/contracts/user/user_grpc_pb";
-import { User as UserProto, UserResponse, UserRequest } from "dreams-proto-sharing/src/contracts/user/user_pb";
+import { UserRequest, UserResponse } from "dreams-proto-sharing/src/contracts/user/user_pb";
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb.js';
+import { container } from 'tsyringe';
+import { usersResponseAdd } from "../../../utils/usersResponseAdd";
 import { CreateUserService } from "../../services/CreateUserService";
 import { ListUsersService } from "../../services/ListUsersService";
 import { ShowUserService } from "../../services/ShowUserService";
@@ -11,27 +13,22 @@ import { UpdateUserService } from "../../services/UpdateUserService";
 class UsersServer implements IUsersServer {
   async updateUser(call: ServerUnaryCall<UserRequest, UserResponse>, callback: sendUnaryData<UserResponse>): Promise<void> {
     try {
-      const user = call.request.getUser()!.toObject();
-      const response = new UserResponse();
-      const updateUserService = new UpdateUserService();
-      const userUpdate = await updateUserService.execute({
-        id: user.id,
-        age: user.age,
-        birthday: user.birthday,
-        email: user.email,
-        firstName: user.firstname,
-        lastName: user.lastname,
+      const userRequest = call.request.getUser()!.toObject();
+
+      const updateUserService = container.resolve(UpdateUserService);
+
+      const user = await updateUserService.execute({
+        id: userRequest.id,
+        age: userRequest.age,
+        birthday: userRequest.birthday,
+        email: userRequest.email,
+        firstName: userRequest.firstname,
+        lastName: userRequest.lastname,
       });
 
-      response.addUser(
-        (new UserProto).setId(userUpdate.id)
-          .setFirstname(userUpdate.firstName)
-          .setLastname(userUpdate.lastName)
-          .setEmail(userUpdate.email)
-          .setAge(userUpdate.age)
-          .setBirthday(userUpdate.birthday)
-      )
-      callback(null, response);
+      const userResponse = usersResponseAdd([user]);
+
+      callback(null, userResponse);
 
     } catch (error) {
       callback(error as ServerErrorResponse, null);
@@ -41,19 +38,14 @@ class UsersServer implements IUsersServer {
   async showUser(call: ServerUnaryCall<UserRequest, UserResponse>, callback: sendUnaryData<UserResponse>): Promise<void> {
     try {
       const userId = call.request.getUser()!.getId();
-      const response = new UserResponse();
-      const showUserService = new ShowUserService();
+
+      const showUserService = container.resolve(ShowUserService);
+
       const user = await showUserService.execute({ userId });
 
-      response.addUser(
-        (new UserProto).setId(user.id)
-          .setFirstname(user.firstName)
-          .setLastname(user.lastName)
-          .setEmail(user.email)
-          .setAge(user.age)
-          .setBirthday(user.birthday)
-      )
-      callback(null, response);
+      const userResponse = usersResponseAdd([user]);
+
+      callback(null, userResponse);
     } catch (error) {
       callback(error as ServerErrorResponse, null);
     }
@@ -62,28 +54,22 @@ class UsersServer implements IUsersServer {
 
   async createUser(call: ServerUnaryCall<UserRequest, UserResponse>, callback: sendUnaryData<UserResponse>): Promise<void> {
     try {
-      const user = call.request.getUser()!.toObject();
-      const response = new UserResponse();
-      const createUserService = new CreateUserService();
+      const userRequest = call.request.getUser()!.toObject();
 
-      const newUser = await createUserService.execute({
-        firstName: user!.firstname,
-        lastName: user!.lastname,
-        age: user!.age,
-        birthday: user!.birthday,
-        email: user!.email
+      const createUserService = container.resolve(CreateUserService);
+
+
+      const user = await createUserService.execute({
+        firstName: userRequest!.firstname,
+        lastName: userRequest!.lastname,
+        age: userRequest!.age,
+        birthday: userRequest!.birthday,
+        email: userRequest!.email
       })
 
-      response.addUser(
-        (new UserProto).setId(newUser.id)
-          .setFirstname(newUser.firstName)
-          .setLastname(newUser.lastName)
-          .setEmail(newUser.email)
-          .setAge(newUser.age)
-          .setBirthday(newUser.birthday)
-      )
+      const userResponse = usersResponseAdd([user]);
 
-      callback(null, response);
+      callback(null, userResponse);
     } catch (error) {
       callback(error as ServerErrorResponse, null);
     }
@@ -92,24 +78,13 @@ class UsersServer implements IUsersServer {
 
   async listUsers(_: ServerUnaryCall<Empty, UserResponse>, callback: sendUnaryData<UserResponse>): Promise<void> {
     try {
-      const response = new UserResponse();
-
-      const listUsersService = new ListUsersService();
+      const listUsersService = container.resolve(ListUsersService);
 
       const users = await listUsersService.execute()
 
-      users.forEach((user) => {
-        response.addUser(
-          (new UserProto).setId(user.id)
-            .setFirstname(user.firstName)
-            .setLastname(user.lastName)
-            .setEmail(user.email)
-            .setAge(user.age)
-            .setBirthday(user.birthday)
-        )
-      })
+      const userResponse = usersResponseAdd(users);
 
-      callback(null, response);
+      callback(null, userResponse);
     } catch (error) {
       callback(error as ServerErrorResponse, null);
     }
