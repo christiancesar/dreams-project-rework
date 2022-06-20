@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import FlightOfferSearchService from "../services/flightOffers/FlightOfferSearchService";
 
-interface IRequest {
+type RequestDTO = {
   originLocationCode: string;
   destinationLocationCode: string;
   departureDate: string;
@@ -25,7 +25,7 @@ export default class FlightsOffersController {
       children,
       infants,
       returnDate
-    } = request.body as IRequest
+    } = request.body as RequestDTO
 
     const flightOfferSearchService = new FlightOfferSearchService();
 

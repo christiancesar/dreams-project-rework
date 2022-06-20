@@ -1,8 +1,26 @@
-import Package from "../../dtos/IPackage";
-import { IPackageRequest } from "../../dtos/IPackageRequest";
 import { PackageSearch, PackageSearchRequest, PackageSearchResponse } from "dreams-proto-sharing/src/contracts/package/package_pb";
 import packageClient from "../../providers/PackageService";
+import { FlightOffer } from "../../../../@types/amadeus/flights/FlightOfferSearchResponse";
+import { HotelOffer } from "../../../../@types/amadeus/hotels/HotelOfferSearchResponse";
 
+type PackageOffersResponse = {
+  flight: FlightOffer;
+  hotel: HotelOffer;  
+  off: number;  
+  total: number;
+}
+
+type PackageOffersRequest = {
+  originLocationCode: string;
+  destinationLocationCode: string;
+  departureDate: string;
+  returnDate: string;
+  adults: number;
+  children: number;
+  infants: number;
+  travelClass: string;
+  roomQuantity: number;
+}
 
 export default class AssemblingPackageService {
   async execute({
@@ -15,9 +33,9 @@ export default class AssemblingPackageService {
     returnDate,
     travelClass,
     roomQuantity
-  }: IPackageRequest): Promise<Package[]> {
+  }: PackageOffersRequest): Promise<PackageOffersResponse[]> {
     
-    const packageServiceRequest = (search: IPackageRequest) => new Promise<PackageSearchResponse>((resolve, reject) => {
+    const packageOffersRequestService = (search: PackageOffersRequest) => new Promise<PackageSearchResponse>((resolve, reject) => {
       packageClient.searchPackage(
         new PackageSearchRequest().setPackagesearch(
           new PackageSearch()
@@ -39,7 +57,7 @@ export default class AssemblingPackageService {
       );
     });
 
-    const packagesResponse = await packageServiceRequest({
+    const packageOffersResponse = await packageOffersRequestService({
       adults,
       children,
       departureDate,
@@ -51,7 +69,7 @@ export default class AssemblingPackageService {
       roomQuantity
     });
 
-    const packages = JSON.parse(packagesResponse.getPackage()) as Package[];
+    const packages = JSON.parse(packageOffersResponse.getPackage()) as PackageOffersResponse[];
 
     return packages 
   }

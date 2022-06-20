@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-import { IPackageRequest } from "../dtos/IPackageRequest";
 import AssemblingPackageService from "../services/packageOffers/AssemblingPackageService";
 
-const assemblingPackageService = new AssemblingPackageService()
-
 export default class PackageOffersControllers {
+  
   async index(request: Request, response: Response): Promise<Response> {
     const {
       adults,
@@ -16,7 +14,8 @@ export default class PackageOffersControllers {
       returnDate,
       travelClass,
       roomQuantity
-    } = request.body as IPackageRequest;
+    } = request.body;
+    const assemblingPackageService = new AssemblingPackageService();
 
     const packages = await assemblingPackageService.execute({
       adults,
