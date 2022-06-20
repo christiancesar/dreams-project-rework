@@ -11,7 +11,9 @@ export const usersResponseAdd = (users: Array<User>): UserResponse => {
         .setLastname(user.lastName)
         .setEmail(user.email)
         .setAge(user.age)
-        .setBirthday(user.birthday)        
+        .setBirthday(user.birthday)
+        .setCreatedat(Date.parse(user.createdAt.toDateString()))
+        .setUpdatedat(Date.parse(user.updatedAt.toDateString()))
     )
   })
 

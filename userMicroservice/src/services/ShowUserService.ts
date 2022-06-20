@@ -1,6 +1,6 @@
 import { status } from "@grpc/grpc-js";
 import { inject, injectable } from "tsyringe";
-import AppError from "../../../common/errors/AppError";
+import AppError from "../../errors/AppError";
 import { UsersRepository } from "../repositories/implementations/UsersRepository";
 import { User } from "../schemas/User";
 
