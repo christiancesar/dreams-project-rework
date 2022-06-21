@@ -1,9 +1,10 @@
 
-import grpc, { sendUnaryData, ServerErrorResponse, ServerUnaryCall } from "@grpc/grpc-js";
+import grpc, { sendUnaryData, ServerErrorResponse, ServerUnaryCall, status } from "@grpc/grpc-js";
 import { IUsersServer } from "dreams-proto-sharing/src/contracts/user/user_grpc_pb";
 import { UserRequest, UserResponse } from "dreams-proto-sharing/src/contracts/user/user_pb";
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb.js';
 import { container } from 'tsyringe';
+import AppError from "../../../errors/AppError";
 import { usersResponseAdd } from "../../../utils/usersResponseAdd";
 import { CreateUserService } from "../../services/CreateUserService";
 import { ListUsersService } from "../../services/ListUsersService";
@@ -27,11 +28,15 @@ class UsersServer implements IUsersServer {
       });
 
       const userResponse = usersResponseAdd([user]);
-
+      
       callback(null, userResponse);
-
     } catch (error) {
-      callback(error as ServerErrorResponse, null);
+      if (error instanceof AppError) {
+        callback(error, null);
+      } else {
+        console.log(error);
+        callback(new AppError({ code: status.INTERNAL, name: "Update User", message: "Internal Server Error" }), null);
+      }
     }
   }
 
@@ -47,7 +52,12 @@ class UsersServer implements IUsersServer {
 
       callback(null, userResponse);
     } catch (error) {
-      callback(error as ServerErrorResponse, null);
+      if (error instanceof AppError) {
+        callback(error, null);
+      } else {
+        console.log(error);
+        callback(new AppError({ code: status.INTERNAL, name: "Show User", message: "Internal Server Error" }), null);
+      }
     }
 
   }
@@ -71,7 +81,12 @@ class UsersServer implements IUsersServer {
 
       callback(null, userResponse);
     } catch (error) {
-      callback(error as ServerErrorResponse, null);
+      if (error instanceof AppError) {
+        callback(error, null);
+      } else {
+        console.log(error);
+        callback(new AppError({ code: status.INTERNAL, name: "Create User", message: "Internal Server Error" }), null);
+      }
     }
   }
 
@@ -86,7 +101,12 @@ class UsersServer implements IUsersServer {
 
       callback(null, userResponse);
     } catch (error) {
-      callback(error as ServerErrorResponse, null);
+      if (error instanceof AppError) {
+        callback(error, null);
+      } else {
+        console.log(error);
+        callback(new AppError({ code: status.INTERNAL, name: "List Users", message: "Internal Server Error" }), null);
+      }
     }
   }
 

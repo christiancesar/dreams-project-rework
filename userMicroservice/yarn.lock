@@ -226,6 +226,11 @@ braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
+bson-objectid@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/bson-objectid/-/bson-objectid-2.0.3.tgz#d840185172846b2f10c42ce2bcdb4a50956a9db5"
+  integrity sha512-WYwVtY9yqk179EPMNuF3vcxufdrGLEo2XwqdRVbfLVe9X6jLt7WKZQgP+ObOcprakBGbHxzl76tgTaieqsH29g==
+
 buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"

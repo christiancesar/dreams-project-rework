@@ -1,4 +1,4 @@
-import { User } from ".prisma/client";
+import { User, Prisma } from ".prisma/client";
 import { prisma } from "../../../prisma";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 import { IUpdateUserDTO } from "../../dtos/IUpdateUserDTO";
